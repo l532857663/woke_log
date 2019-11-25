@@ -1,0 +1,15 @@
+工作日志：
+	/v1/retailer/goods/offline/query 获取商品列表 (完成)
+	curl -v -XGET -H"X-Auth-Token:GRmwo/3/myK0ic5ZSXv9M56szIqtBtKG8rWxNYXRCp/D4Hbjqib/U2lIsnqyQH3mzR+o5qyAMf0eN/p3vRHtDg==" http://127.0.0.1:9000/v1/retailer/goods/offline/query
+	curl -v -XGET -H"X-Auth-Token:GRmwo/3/myK0ic5ZSXv9M56szIqtBtKG8rWxNYXRCp/D4Hbjqib/U2lIsnqyQH3mzR+o5qyAMf0eN/p3vRHtDg==" http://127.0.0.1:9000/v1/retailer/goods/offline/query?category_id=1001
+	{"code":0,"message":"","data":{"paginator":{"page_no":1,"page_size":10,"total_count":1},"store_id":"1000","goods":[{"category_id":1001,"category_name":"其他","spu_id":14983,"sku_no":"6941595300479","spu_no":"","product_name":"平盘","store_id":"1000","images_urls":null,"unit":"个","created_at":1573713434,"updated_at":1573713434,"quantity":10,"guide_price":0,"sales_price":320,"cost_price":320}]}}
+
+	/v1/retailer/purchase/query 采购订单查询 (完成)
+	curl -v -XGET -H"X-Auth-Token:GRmwo/3/myK0ic5ZSXv9M56szIqtBtKG8rWxNYXRCp/D4Hbjqib/U2lIsnqyQH3mzR+o5qyAMf0eN/p3vRHtDg==" http://127.0.0.1:9000/v1/retailer/purchase/query?starttime='1569910263'
+	{"code":0,"message":"","data":{"paginator":{"page_no":1,"page_size":10,"total_count":4},"orders":[{"p_order_id":48,"p_order_no":"00000000000000064187","store_id":0,"title":"","total_amount":1889942,"total_quantity":1290,"status":"60    ","create_date":"","effective_date":"","arrival_date":"","pose_date":"","creator_id":0,"creator_name":"","channel":"沧州市烟草商业公司"},{"p_order_id":76,"p_order_no":"00000000000000065998","store_id":0,"title":"","total_amount":1382520,"total_quantity":930,"status":"60","create_date":"","effective_date":"","arrival_date":"","pose_date":"","creator_id":0,"creator_name":"","channel":"沧州市烟草商业公司"},{"p_order_id":61,"p_order_no":"00000000000000065072","store_id":0,"title":"","total_amount":1444843,"total_quantity":1170,"status":"60","create_date":"","effective_date":"","arrival_date":"","pose_date":"","creator_id":0,"creator_name":"","channel":"沧州市烟草商业公司"},{"p_order_id":36,"p_order_no":"00000000000000063307","store_id":0,"title":"","total_amount":2020520,"total_quantity":1360,"status":"SUCCESS","create_date":"20191016","effective_date":"20191017","arrival_date":"","pose_date":"20191018","creator_id":0,"creator_name":"","channel":"沧州市烟草商业公司"}]}}
+	/v1/retailer/purchase/query_details 查询采购订单详情 (完成)
+	curl -v -XGET -H"X-Auth-Token:GRmwo/3/myK0ic5ZSXv9M56szIqtBtKG8rWxNYXRCp/D4Hbjqib/U2lIsnqyQH3mzR+o5qyAMf0eN/p3vRHtDg==" http://127.0.0.1:9000/v1/retailer/purchase/query_details?p_order_id='48'
+
+
+	/v1/retailer/store/userinfo (完成)
+

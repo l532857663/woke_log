@@ -1,0 +1,14 @@
+工作日志：
+	一、测试沧州农行接口，Notify回调接口,验签通过，因为农行API接口修改，调整对应入参结构
+	二、沧州统计页面：
+		http/stat/stat.go
+			/v1/retailng-op/stat/overall 综合统计信息(全品类) (完成)
+	curl -v -XGET -H"X-Auth-Token:U9faOLdsOhUuL70QQswBTB+qr/lYZ22IYw71gABxgf6Tpc9nP+ogXMN15gP17m8Ast7gjkM5Lpv54b7mmPPGIg==" http://127.0.0.1:9006/v1/retailng-op/stat/overall?category_id=1000
+	{"code":0,"message":"","data":{"sales_total":{"sales_amount":120168,"off_amount":84968,"wx_amount":1800,"ali_amount":33400},"tx_total":{"tx_quantity":26,"off_quantity":24,"wx_quantity":1,"ali_quantity":1}}}
+	展示应付金额，跟实付金额不太一样
+			/v1/retailng-op/stat/sales_ranks 卷烟销售排行信息(全品类) (完成)
+			curl -v -XGET -H"X-Auth-Token:U9faOLdsOhUuL70QQswBTB+qr/lYZ22IYw71gABxgf6Tpc9nP+ogXMN15gP17m8Ast7gjkM5Lpv54b7mmPPGIg==" http://127.0.0.1:9006/v1/retailng-op/stat/sales_ranks?store_id=1000
+			{"code":0,"message":"","data":[{"rank_no":1,"sku_no":"6901028193498","product_name":"芙蓉王(硬)","quantity":330},{"rank_no":2,"sku_no":"6901028221443","product_name":"贵烟(跨越)","quantity":284},{"rank_no":3,"sku_no":"6901028201711","product_name":"芙蓉王(硬细支)","quantity":199},{"rank_no":4,"sku_no":"6901028150361","product_name":"泰山(望岳)","quantity":178},{"rank_no":5,"sku_no":"6901028250979","product_name":"钻石(金玉兰)2","quantity":142},{"rank_no":6,"sku_no":"6901028315005","product_name":"红塔山(软经典)","quantity":106},{"rank_no":7,"sku_no":"6901028080217","product_name":"钻石(硬特醇)","quantity":75},{"rank_no":8,"sku_no":"6901028104234","product_name":"哈尔滨(老巴夺)","quantity":66},{"rank_no":9,"sku_no":"6901028100359","product_name":"长白山(红)","quantity":52},{"rank_no":10,"sku_no":"6901028250320","product_name":"钻石(细支尚风)","quantity":52}]}
+			/v1/retailng-op/stat/sales_ratios 卷烟销售占比信息(全品类) (完成)
+			/v1/retailng-op/stat/sales 卷烟销售统计(全品类) (完成)
+

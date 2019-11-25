@@ -1,0 +1,18 @@
+工作日志：
+	一、测试沧州农行接口，Notify回调接口
+	二、沧州统计页面：
+		http/stat/stock.go
+			/v1/retailng-op/stat/stock/overall 库存统计信息(全品类) (完成)
+			/v1/retailng-op/stat/stocks 库存信息(全品类) (完成)
+		http/stat/stat.go
+			/v1/retailng-op/stat/overall 综合统计信息(全品类) (完成)
+		/v1/retailng-op/stat/sales_ranks 卷烟销售排行信息(全品类)
+		/v1/retailng-op/stat/sales_ratios 卷烟销售占比信息(全品类)
+		/v1/retailng-op/stat/sales 卷烟销售统计(全品类)
+	三、修改沧州PC端
+		http/stock/stock_check.go 
+			/v1/retailer/stock/check/query 查询库存盘点记录 (完成)
+				添加订单号查询
+		http/offline/offline.go
+			/v1/retailer/goods/offline/query 获取商品列表
+				按照查询的商品获取入库售出的数量

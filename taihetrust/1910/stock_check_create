@@ -1,0 +1,9 @@
+{
+	"check_items": [
+		{
+			"sku_no":"6901028107228",
+			"old_quantity":0,
+			"new_quantity":200
+		}
+	]
+}

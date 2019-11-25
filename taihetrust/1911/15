@@ -1,0 +1,16 @@
+工作日志：
+	/v1/retailer/sales/orders/query 销售订单查询 (完成)
+	curl -v -XGET -H"X-Auth-Token:GRmwo/3/myK0ic5ZSXv9M56szIqtBtKG8rWxNYXRCp/D4Hbjqib/U2lIsnqyQH3mzR+o5qyAMf0eN/p3vRHtDg==" http://127.0.0.1:9000/v1/retailer/sales/orders/query?starttime='1572590303'
+
+	/v1/retailer/stat/txs/date_stat 卷烟交易统计 (完成)
+	curl -v -XGET -H"X-Auth-Token:GRmwo/3/myK0ic5ZSXv9M56szIqtBtKG8rWxNYXRCp/D4Hbjqib/U2lIsnqyQH3mzR+o5qyAMf0eN/p3vRHtDg==" http://127.0.0.1:9000/v1/retailer/stat/txs/date_stat?starttime='1572590303'\&category_id='1000'
+	{"code":0,"message":"","data":[{"time":"2019-11-08","amount":4,"quantity":4}]}
+
+	/v1/retailer/stat/txs/overall 交易统计信息 (完成)
+	curl -v -XGET -H"X-Auth-Token:GRmwo/3/myK0ic5ZSXv9M56szIqtBtKG8rWxNYXRCp/D4Hbjqib/U2lIsnqyQH3mzR+o5qyAMf0eN/p3vRHtDg==" http://127.0.0.1:9000/v1/retailer/stat/txs/overall?starttime='1572590303'\&category_id='1000'
+	{"code":0,"message":"","data":{"sales_total":{"sales_amount":4,"off_amount":0,"wx_amount":2,"ali_amount":2},"tx_total":{"tx_quantity":4,"off_quantity":0,"wx_quantity":2,"ali_quantity":2}}}
+
+	/v1/retailer/stock/goods_stat 商品统计 (完成)
+	curl -v -XGET -H"X-Auth-Token:6a7F+QpR9MRbGlQJix/koRNiS2xrJvI40+h/WaEJ4TWG2K+8Ic5baiQPr+4ivqSdC421ZBnzVAHszTB3tH84mA==" http://127.0.0.1:9000/v1/retailer/stock/goods_stat?category_id=1001
+	{"code":0,"message":"","data":{"SpuQuantity":2,"GoodsQuantity":2,"RemoveQuantity":0,"StockTightQuantity":2,"StockAmount":6400,"StockQuantity":20}}
+

@@ -1,0 +1,66 @@
+重测API:
+E7SECrrIYZ4rot+v8BcNkGo+EjeWGguDwx65SJXS3ly0agzaRdYbjWfG++2gyFG4GqKeSReC9TZsDvEBLv8iqw==   00000000-45ba-6fc9-3234-aba30033c587
+
+修改调整：
+	core/storage/stock_check.go 89行 sku_no类型
+
+Bill OK
+- 入库订单查询: /v1/retailer/bills/query
+	curl -v -XGET -H"X-Auth-Token:" http://127.0.0.1:9000/v1/retailer/bills/query
+- 查询出入库订单详情: /v1/retailer/bills/query_details
+	curl -v -XGET -H"X-Auth-Token:" http://127.0.0.1:9000/v1/retailer/bills/query_details
+	?bill_no='SCB2217120653491151'
+
+Sales
+- 创建销售订单: /v1/retailer/sales/orders/online/create
+	curl -v -XPOST -H"X-Auth-Token:" -H"X-Device-ID:00000000-45ba-6fc9-3234-aba30033c587" -d@ http://127.0.0.1:9000/v1/retailer/sales/orders/online/create
+- 线下支付: /v1/retailer/sales/orders/offline/pay
+	curl -v -XPOST -H"X-Auth-Token:" -H"X-Device-ID:00000000-45ba-6fc9-3234-aba30033c587" -d@ http://127.0.0.1:9000/v1/retailer/sales/orders/offline/pay
+- 销售订单查询: /v1/retailer/sales/orders/query
+	curl -v -XGET -H"X-Auth-Token:" http://127.0.0.1:9000/v1/retailer/sales/orders/query
+- 销售订单详情: /v1/retailer/sales/orders/get
+	curl -v -XGET -H"X-Auth-Token:" http://127.0.0.1:9000/v1/retailer/sales/orders/get
+	?order_no='758214158143576204'
+	
+Stat
+- 查看商品销售信息: /v1/retailer/stat/sales/spu/query
+	curl -v -XGET -H"X-Auth-Token:" http://127.0.0.1:9000/v1/retailer/stat/sales/spu/query
+- 综合统计信息
+	curl -v -XGET -H"X-Auth-Token:" http://127.0.0.1:9000/v1/retailer/stat/overall
+- 自律小组商品销售榜单: /v1/retailer/stat/sales/group_sales_ranks
+	curl -v -XGET -H"X-Auth-Token:" http://127.0.0.1:9000/v1/retailer/stat/sales/group_sales_ranks
+- 销售统计信息: /v1/retailer/stat/sales/sales_stat
+	curl -v -XGET -H"X-Auth-Token:" http://127.0.0.1:9000/v1/retailer/stat/sales/sales_stat
+
+Stock
+- 商品库存统计: /v1/retailer/stock/stat
+	curl -v -XGET -H"X-Auth-Token:E7SECrrIYZ4rot+v8BcNkGo+EjeWGguDwx65SJXS3ly0agzaRdYbjWfG++2gyFG4GqKeSReC9TZsDvEBLv8iqw==" http://127.0.0.1:9000/v1/retailer/stock/stat
+- 库存盘点: /v1/retailer/stock/check/create
+	curl -v -XPOST -H"X-Auth-Token:" -d@stock_check_create http://127.0.0.1:9000/v1/retailer/stock/check/create
+	-> {"bill_no":"SCB4862665381244359"}
+- 查询库存盘点记录: /v1/retailer/stock/check/query
+	curl -v -XGET -H"X-Auth-Token:" http://127.0.0.1:9000/v1/retailer/stock/check/query
+- 库存盘点记录详情: /v1/retailer/stock/check/get
+	curl -v -XGET -H"X-Auth-Token:" http://127.0.0.1:9000/v1/retailer/stock/check/get
+	?bill_no='SCB1742698427767366'
+- 查看库存信息: /v1/retailer/stock/query
+	curl -v -XGET -H"X-Auth-Token:" http://127.0.0.1:9000/v1/retailer/stock/query
+- 查询SKU库存流水: /v1/retailer/stock/query_details
+	curl -v -XGET -H"X-Auth-Token:" http://127.0.0.1:9000/v1/retailer/stock/query_details
+	?sku_no='6901028104234'
+
+定时测试:
+select * from bill_info order by bill_id desc limit 10;
+delete from bill_info where bill_no='XSMCZ0005934148';
+delete from purchase_order where p_order_no='XSMCZ0005934148';
+
+SELECT * FROM "bill_info"  WHERE (bill_no = 'XSMCZ0005944618')
+UPDATE "sku_stock" SET "quantity" = 50, "updated_at" = '2019-11-05 21:05:02'  WHERE (sku_no = '6901028169677' AND store_id = 'st-9405806556')
+INSERT  INTO "bill_sku" ("bill_id","bill_no","sku_no","unit","product_name","specs","amount","quantity","before","after","created_at","updated_at") VALUES (851,'','6901028169677','','黄金叶(金满堂)','黄金叶(金满堂)',93,10,40,0,'2019-11-05 21:05:02','2019-11-05 21:05:02') RETURNING "bill_sku"."bill_id"
+INSERT  INTO "purchase_order_sku" ("p_order_id","sku_no","product_name","specs","purchase_price","quantity") VALUES (72,'6901028169677','黄金叶(金满堂)','黄金叶(金满堂)',93,10) RETURNING "purchase_order_sku"."p_order_id"
+
+
+APP端:
+库存页面：账本明细 指导价￥NaN
+调整库存：参数无效
+修改销售价: 进不去

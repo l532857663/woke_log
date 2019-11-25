@@ -1,0 +1,19 @@
+sku_stock、sales_sku表数据对比
+条转盒  *10
+sales_sku加条单价
+插入商品
+
+
+扫码获取商品详情是从哪获取的？
+调整库存 没有就插入一条
+
+现场注册
+
+\copy sku_stock (sku_no,quantity,store_id) from '/data/1003.csv' DELIMITER ',';
+update sku_stock set spu_id=spu.spu_id from spu where sku_stock.sku_no = spu.spu_no and sku_stock.store_id='1003';
+update sku_stock set product_name=spu.product_name from spu where sku_stock.sku_no = spu.spu_no and sku_stock.store_id='1003';
+update sku_stock set guide_price=spu.guide_price from spu where sku_stock.sku_no = spu.spu_no and sku_stock.store_id='1003';
+update sku_stock set unit='包' where store_id='1003';
+inert into sales_sku (select '1003',spu_id,spu_no,null,guide_price,guide_price,guide_price,created_at,updated_at from spu where spu_type=2) on cofilct do nothing;
+
+

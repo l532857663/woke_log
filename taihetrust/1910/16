@@ -1,0 +1,189 @@
+修改gx上线BUG:
+    修改包条件查询页面，缺少品牌数据
+    修改条码管理页面数据展示
+    修改订单列表页面时间字段展示
+
+问题:
+	core/storage/purchase.go 128行: 修改插入sales_sku数据报错但不返回，只打印错误
+	core/storage/stock_check.go 163行 应该不要Find() 部分
+	core/storage/order.go 43行 left Join 后边sku_stock错了
+
+测试retailng:
+
+Bill
+- 入库订单查询: /v1/retailer/bills/query
+	curl -v -XGET -H"X-Auth-Token:" http://127.0.0.1:9000/v1/retailer/bills/query
+	查询bill_info得到结果
+
+- 查询出入库订单详情: /v1/retailer/bills/query_details
+	curl -v -XGET -H"X-Auth-Token:" http://127.0.0.1:9000/v1/retailer/bills/query_details?bill_no='SCB1742698427767366'
+	查询bill_info得到数据，用bill_id
+	再查bill_sku得到结果
+
+Stock
+- 商品库存统计: /v1/retailer/stock/stat
+	curl -v -XGET -H"X-Auth-Token:" http://127.0.0.1:9000/v1/retailer/stock/stat
+	查询sku_stock交叉关联sales_sku
+		on sales_sku.store_id = sku_stock.store_id
+		and sales_sku.sku_no = sku_stock.sku_no
+		得到count(商品ID)、sum(库存数量)、sum(库存数量*销售价格)
+	查询bill_info表
+		入库bill_type = 1、出库bill_type = 2、盘点次数bill_type = 3
+
+- 库存盘点: /v1/retailer/stock/check/create
+	curl -v -XPOST -H"X-Auth-Token:" -d@stock_check_create http://127.0.0.1:9000/v1/retailer/stock/check/create
+
+- 查询库存盘点记录: /v1/retailer/stock/check/query
+	curl -v -XGET -H"X-Auth-Token:" http://127.0.0.1:9000/v1/retailer/stock/check/query
+	查询bill_info 库存调整bill_type = 3
+	求总数： core/storage/stock_check.go 163行 应该不要Find() 部分???
+	求分页后数据
+
+- 库存盘点记录详情: /v1/retailer/stock/check/get
+	curl -v -XGET -H"X-Auth-Token:" http://127.0.0.1:9000/v1/retailer/stock/check/get?bill_no='SCB1742698427767366'
+	查询bill_info得到数据，用bill_id
+	再查bill_sku得到结果
+	得到的数据跟API文档有不同
+
+- 查看库存信息: /v1/retailer/stock/query
+	curl -v -XGET -H"X-Auth-Token:" http://127.0.0.1:9000/v1/retailer/stock/query
+	查询sku_stock的数据
+	按时间倒序展示
+	得到的数据跟API文档有不同
+
+- 查询SKU库存流水: /v1/retailer/stock/query_details
+	curl -v -XGET -H"X-Auth-Token:" http://127.0.0.1:9000/v1/retailer/stock/query_details
+	查询sku_stock的数据
+	通过bill_sku 获取某个SKU的库存变更记录
+	bill_sku联表bill_info 查询到数据
+
+
+Sales
+- 创建销售订单: /v1/retailer/sales/orders/create
+	curl -v -XPOST -H"X-Auth-Token:" -H"X-Device-ID:00000000-45ba-6fc9-3234-aba30033c587" -d@ http://127.0.0.1:9000/v1/retailer/sales/orders/create
+	sku_no: 6901028315005 
+	stock_quantity:84
+	order_id: 283~286
+	查询spu
+	查询sku_stock 关联salse_sku
+	插入orders
+	插入order_sku
+	插入pay_txns
+- 线下支付: /v1/retailer/sales/orders/offline/pay
+	curl -v -XPOST -H"X-Auth-Token:" -H"X-Device-ID:00000000-45ba-6fc9-3234-aba30033c587" -d@ http://127.0.0.1:9000/v1/retailer/sales/orders/create
+	Api参数格式有误: order_id 整型
+	查询orders、pay_txns、
+	order_sku 关联 sku_stock
+	插入bill_info
+		total_amount: 13100
+		sku_count: 1
+		total_quantity: 5
+		bill_no = 'SOB0513341531312715'
+		"sku_no" = '6901028315005'
+		"sku_stock" SET "quantity" = 79
+	插入bill_sku
+	更新orders、pay_txns
+
+SELECT device.*, account_store.uid FROM "device" JOIN account_store on device.store_id= account_store.store_id WHERE ("device"."device_id" = '00000000-45ba-6fc9-3234-aba30033c587')
+SELECT * FROM "orders"  WHERE ("orders"."order_id" = 284) AND ("orders"."store_id" = '1000')
+SELECT * FROM "pay_txns"  WHERE ("pay_txns"."order_no" = '852635789818829255')
+SELECT order_sku.sku_no, order_sku.quantity, sku_stock.quantity as old_quantity FROM "order_sku" JOIN sku_stock ON sku_stock.sku_no = order_sku.sku_no and sku_stock.store_id = order_sku.store_id WHERE ("order_sku"."order_id" = 284) AND ("order_sku"."store_id" = '1000')
+INSERT  INTO "bill_info" ("store_id","bill_type","bill_no","title","bill_desc","total_amount","sku_count","total_quantity","status","remarks","creator_id","creator_name","created_date","bron_date","arr_date","bc_tx_id","created_at","updated_at") VALUES ('1000',2,'SOB0513341531312715','红塔山(软经典)','',13100,1,5,'SUCCESS','',0,'',0,0,0,'1ac485983882d9040e3e28a67be240e88d3270484b371dbf4164ee6e8a34a9bb','2019-10-17 16:48:57','2019-10-17 16:48:57') RETURNING "bill_info"."bill_id"
+SELECT * FROM "bill_info"  WHERE (bill_no = 'SOB0513341531312715')
+SELECT * FROM "sku_stock"  WHERE ("sku_stock"."store_id" = '1000') AND ("sku_stock"."sku_no" = '6901028315005') FOR UPDATE
+UPDATE "sku_stock" SET "quantity" = 79, "updated_at" = '2019-10-17 16:48:57'  WHERE (sku_no = '6901028315005' AND store_id = '1000')
+INSERT  INTO "bill_sku" ("bill_id","bill_no","sku_no","unit","product_name","specs","amount","quantity","before","after","created_at","updated_at") VALUES (546,'','6901028315005','','红塔山(软经典)','',0,5,84,79,'2019-10-17 16:48:57','2019-10-17 16:48:57') RETURNING "bill_sku"."bill_id"
+UPDATE "orders" SET "bc_tx_id" = '1ac485983882d9040e3e28a67be240e88d3270484b371dbf4164ee6e8a34a9bb', "pay_time" = 1571302137, "pay_way" = 'offline', "status" = 'SUCCESS', "updated_at" = '2019-10-17 16:48:57'  WHERE ("orders"."order_id" = 284) AND ("orders"."store_id" = '1000') AND ("orders"."title" = '红塔山(软经典)') AND ("orders"."total_quantity" = 5) AND ("orders"."subtotal_amount" = 13100)
+UPDATE "pay_txns" SET "bc_tx_id" = '1ac485983882d9040e3e28a67be240e88d3270484b371dbf4164ee6e8a34a9bb', "time_end" = 1571302137, "trade_status" = 'SUCCESS', "trade_type" = 'offline', "updated_at" = '2019-10-17 16:48:57'  WHERE ("pay_txns"."order_id" = 284)
+
+- 销售订单查询: /v1/retailer/sales/orders/query
+	curl -v -XGET -H"X-Auth-Token:" http://127.0.0.1:9000/v1/retailer/sales/orders/query
+	查询orders
+	按时间逆序
+
+- 销售订单详情: /v1/retailer/sales/orders/get
+	curl -v -XGET -H"X-Auth-Token:" http://127.0.0.1:9000/v1/retailer/sales/orders/get
+	core/storage/order.go 43行 left Join 后边sku_stock错了???
+	通过order_no 先查询orders
+	在查order_sku 关联sku_stock 查出数据
+
+
+
+采购加库存(定时统计)
+订单减库存(交易)
+
+Stat
+- 查看商品销售信息: /v1/retailer/stat/sales/spu/query
+	curl -v -XGET -H"X-Auth-Token:" http://127.0.0.1:9000/v1/retailer/stat/sales/spu/query
+	查询order_sku JOIN orders
+
+- 综合统计信息
+	curl -v -XGET -H"X-Auth-Token:" http://127.0.0.1:9000/v1/retailer/stat/overall
+	查询orders表直接统计
+
+- 自律小组商品销售榜单: /v1/retailer/stat/sales/group_sales_ranks
+	curl -v -XGET -H"X-Auth-Token:" http://127.0.0.1:9000/v1/retailer/stat/sales/group_sales_ranks
+	查询spu  直接查总数???
+	关联表sku_stock、order_sku、orders、bill_sku
+	where b.before < b.after and r.status = 'SUCCESS'
+	group by p.spu_id, s.guide_price
+
+- 销售统计信息: /v1/retailer/stat/sales/sales_stat
+	curl -v -XGET -H"X-Auth-Token:" http://127.0.0.1:9000/v1/retailer/stat/sales_stat
+	查询orders数据
+	"orders"."pay_way" = 'offline' 再查一遍
+	查询order_sku
+	关联表orders、sku_stock
+
+测定时：
+	先查store表，获取用户列表
+	core/storage/purchase.go core/storage/purchase.go 128行: 修改插入sales_sku数据报错但不返回，只打印错误???
+	查时间段内订单是否更新>没更新跳出
+	SELECT * FROM "v_co_cz"  WHERE (cust_id = '130901105103' and born_date > '20190928' and born_date < '20191018')
+	查订单是否同步>没同步跳出
+	SELECT * FROM "purchase_order"  WHERE ("purchase_order"."p_order_no" = '00000000000000062592')
+	未同步订单的详情
+	SELECT * FROM "v_co_line_cz"  WHERE ("v_co_line_cz"."co_num" = '00000000000000062592')
+
+	Get combine sku info
+	查询sku商品信息, 缓存商品信息
+	获取sku信息
+	插入订单数据
+	插入入库单数据
+	SELECT * FROM "spu"  WHERE ("spu"."spu_no" = '6901028107228') 。。。。。。
+	INSERT  INTO "bill_info" ("store_id","bill_type","bill_no","title","bill_desc","total_amount","sku_count","total_quantity","status","remarks","creator_id","creator_name","created_date","bron_date","arr_date","bc_tx_id","created_at","updated_at") VALUES ('1002',1,'00000000000000062592','','',2085030,73,1350,'60    ','',0,'',0,0,0,'cfcaa10808b7642ca973f6fa326a489feb2f8ee061d16b9f25fca2a2b92f0968','2019-10-18 09:24:04','2019-10-18 09:24:04') RETURNING "bill_info"."bill_id"
+	INSERT  INTO "purchase_order" ("store_id","p_order_no","title","total_quantity","total_amount","status","remarks","creator_id","creator_name","created_at","updated_at") VALUES ('1002','00000000000000062592','',1350,2085030,'60    ','',0,'','2019-10-18 09:24:05','2019-10-18 09:24:05') RETURNING "purchase_order"."p_order_id"
+	SELECT * FROM "bill_info"  WHERE (bill_no = '00000000000000062592')
+	SELECT * FROM "purchase_order"  WHERE (p_order_no = '00000000000000062592')
+	SELECT * FROM "sku_stock"  WHERE ("sku_stock"."store_id" = '1002') AND ("sku_stock"."sku_no" = '6901028107228')
+	UPDATE "sku_stock" SET "quantity" = 50, "updated_at" = '2019-10-18 09:24:05'  WHERE (sku_no = '6901028107228' AND store_id = '1002')
+	INSERT  INTO "bill_sku" ("bill_id","bill_no","sku_no","unit","product_name","specs","amount","quantity","before","after","created_at","updated_at") VALUES (547,'','6901028107228','','钻石(细支避暑山庄)','钻石(细支避暑山庄)',263,10,40,0,'2019-10-18 09:24:05','2019-10-18 09:24:05') RETURNING "bill_sku"."bill_id"
+	INSERT  INTO "purchase_order_sku" ("p_order_id","sku_no","product_name","specs","purchase_price","quantity") VALUES (18,'6901028107228','钻石(细支避暑山庄)','钻石(细支避暑山庄)',263,10) RETURNING "purchase_order_sku"."p_order_id"
+
+	bill_id = 547
+	p_order_id=18
+	quantity=50
+	delete from bill_info where bill_id='547';
+	delete from purchase_order where p_order_id='18';
+	delete from sku_stock where sku_no = '6901028107228' AND store_id = '1002';
+
+	 bill_id | store_id | bill_type |       bill_no        | title | bill_desc | total_amount | sku_count | total_quantity | status | remarks | creator_id | creator_name | created_date | bron_date | arr_date |          created_at           |          updated_at           |                             bc_tx_id
+---------+----------+-----------+----------------------+-------+-----------+--------------+-----------+----------------+--------+---------+------------+--------------+--------------+-----------+----------+-------------------------------+-------------------------------+------------------------------------------------------------------
+     548 | 1002     |         1 | 00000000000000062592 |       |           |      2085030 |        73 |           1350 | 60     |         |          0 |              |            0 |         0 |        0 | 2019-10-18 03:03:12.363564+00 | 2019-10-18 03:03:12.363564+00 | cfcaa10808b7642ca973f6fa326a489feb2f8ee061d16b9f25fca2a2b92f0968
+	  p_order_id | store_id |      p_order_no      | title | total_quantity | total_amount | status | remarks | creator_id | creator_name |          created_at           |          updated_at
+------------+----------+----------------------+-------+----------------+--------------+--------+---------+------------+--------------+-------------------------------+-------------------------------
+         19 | 1002     | 00000000000000062592 |       |           1350 |      2085030 | 60     |         |          0 |              | 2019-10-18 03:03:12.464746+00 | 2019-10-18 03:03:12.464746+00
+ store_id |    sku_no     | spu_id |    product_name    |       specs        | guide_price | quantity | unit |          created_at           |          updated_at           
+----------+---------------+--------+--------------------+--------------------+-------------+----------+------+-------------------------------+-------------------------------
+ 1002     | 6901028107228 |   1133 | 钻石(细支避暑山庄) | 钻石(细支避暑山庄) |        3000 |       10 | 盒   | 2019-10-18 03:03:34.679294+00 | 2019-10-18 03:03:34.679294+00
+
+	quantity=10
+	delete from bill_info where bill_id='548';delete from purchase_order where p_order_id='19';
+	 store_id |    sku_no     | spu_id |    product_name    |       specs        | guide_price | quantity | unit |          created_at           |          updated_at
+----------+---------------+--------+--------------------+--------------------+-------------+----------+------+-------------------------------+-------------------------------
+ 1002     | 6901028107228 |   1133 | 钻石(细支避暑山庄) | 钻石(细支避暑山庄) |        3000 |       20 | 盒   | 2019-10-18 03:03:34.679294+00 | 2019-10-18 03:28:32.033325+00
+	delete from bill_info where bill_id='549';delete from purchase_order where p_order_id='20';delete from sku_stock where sku_no = '6901028107228' AND store_id = '1002';delete from sku_stock where "sku_stock"."store_id" = '1002' AND "sku_stock"."sku_no" = '6901028080439';
+
+	INSERT  INTO "sku_stock" ("store_id","sku_no","spu_id","product_name","specs","guide_price","quantity","unit","created_at","updated_at") VALUES ('1002','6901028107228',1133,'钻石(细支避暑山庄)','钻石(细支避暑山庄)',3000,10,'盒','2019-10-18 11:38:22','2019-10-18 11:38:22') RETURNING "sku_stock"."store_id"
+	INSERT  INTO "sales_sku" ("store_id","spu_id","sku_no","cost_price","avg_sales_price","sales_price","created_at","updated_at") VALUES ('1002',1133,'6901028107228',263,3000,3000,'2019-10-18 11:38:23','2019-10-18 11:38:23') RETURNING "sales_sku"."store_id"
+

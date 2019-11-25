@@ -1,0 +1,15 @@
+扫码溯源：
+	扫码请求参数为条或包副码
+	请求fmdata，关联scan_history
+	select qrcode,type from fmdata where fu='';
+	查询次数：
+	select count(*) from scan_history where qrcode='';
+	第一次查询时间
+	select scan_time, client_no(client_name) from scan_history where qrcode='' order_by scan_time limit 1;
+	零售户名称，商业公司名称
+	select client_name, com_name from retailers where client_no='';
+	
+点击扫码  调摄像头  扫码重定向
+
+广西中烟LOGO，提示信息，背景
+加载速度，加载效果

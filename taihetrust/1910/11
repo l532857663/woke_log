@@ -1,0 +1,29 @@
+编写条码管理功能对应的API:
+	/v1/gxbtj/btj/btcode/query 查询条码生成信息
+	QueryBtCodeAll函数，查询所有条码生成信息，可根据时间范围，副码信息
+
+api {get} /v1/gxbtj/btj/btcode/query 查询条码生成信息
+curl -v -XGET -H"X-Auth-Token:bDhxZNVV1BPrbK5vDMeDZcfzAXux2SO2pwJAF1G+DbNDjlVrbU+c85s+Cjbt2sEf2v6Wtj744dHEy2gYadMACw==" http://127.0.0.1:9004/v1/gxbtj/btj/btcode/query?starttime='1570291200'\&endtime='1570377600'
+
+
+编写查询用户分析功能对应的API：
+	/v1/gxbtj/stat/consumer/query_area_ranks 查询高扫码/高价值/高消费者零售户地域分布
+
+api {get} /v1/gxbtj/stat/consumer/query_area_ranks 查询高扫码/高价值/高消费者零售户地域分布
+curl -v -XGET -H"X-Auth-Token:bDhxZNVV1BPrbK5vDMeDZcfzAXux2SO2pwJAF1G+DbNDjlVrbU+c85s+Cjbt2sEf2v6Wtj744dHEy2gYadMACw==" http://127.0.0.1:9004/v1/gxbtj/stat/consumer/query_area_ranks?filter='scan'
+curl -v -XGET -H"X-Auth-Token:bDhxZNVV1BPrbK5vDMeDZcfzAXux2SO2pwJAF1G+DbNDjlVrbU+c85s+Cjbt2sEf2v6Wtj744dHEy2gYadMACw==" http://127.0.0.1:9004/v1/gxbtj/stat/consumer/query_area_ranks?starttime='1564588800'\&endtime='1564675200'\&filter='scan'
+高扫码：
+select client_name,count(client_name) as count from btjdata as b inner join sort_orders as s on b.order_no = s.order_no where xbfu in (select order_no from scan_history as s inner join btjdata as b on s.qrcode = b.xbfu where crt_date >= ? and crt_date < ? and province = ?) group by client_name order by count desc limit 100;
+
+#"update scan_history set qrcode='' where id='';
+
+问题：
+地图？高扫码得出的零售户 地理位置集合？还是用户分析
+地理位置？通过零售户详情表查询？
+
+价值？怎么算分？
+类型？
+扫码率？有出售数量么？
+消费者数量？可以获取到扫码的消费者数量
+异地？还是位置问题
+距离？经纬度？

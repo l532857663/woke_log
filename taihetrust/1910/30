@@ -1,0 +1,18 @@
+工作日志：
+	备份postgresql数据库
+	pg_dump -h localhost -U gxbtj gxbtj > /data/database_bak/gx_db.sql
+	数据导入至fmdata
+	./build/bin/btjtools load --type thfm --file ~/mytest/files/guangxi/new_fmdata.txt
+	数据导入至btjdata
+	./bin/btjtools load --type btgl --file /opt/taihetrust/new_data/*.json
+
+
+
+Traceable 溯源次数
+没数据就是第一次查询，有数据就添加次数
+
+恢复数据库
+psql -h localhost -U gxbtj -f /data/database_bak/gx_db.sql gxbtj
+
+select count(zhu) from fmdata; 4108500
+select count(id) from btjdata; 3197821  5411092

@@ -1,0 +1,32 @@
+工作日志:
+一、修改沧州入库订单的库存量,合并特殊编号到其正常编号的库存数量
+	修改数据库结构
+	测试定时任务：
+		st-6238034691
+		XSMCZ0005962173
+	delete from purchase_order where p_order_no='XSMCZ0005962173';delete from bill_info where bill_no='XSMCZ0005962173';
+
+	select * from spu where spu_no like '6901028177535%';
+	select * from spu where spu_no like '%A' or spu_no like '%F%';
+	update spu_combine set cb_spu_id='1150',cb_sku_no='6901028177535' where spu_id='689';
+
+	select * from sku_stock WHERE (sku_no = '6901028177535' AND store_id = 'st-6238034691');
+
+二、FIX BUG：
+		修改销售订单返回订单详情数据
+	
+三、沧州统计页面：
+	http/stat/sales.go
+		/v1/retailng-op/stat/txs/get 卷烟销售支付列表(全品类) (完成)
+			curl -v -XGET -H"X-Auth-Token:U9faOLdsOhUuL70QQswBTB+qr/lYZ22IYw71gABxgf6Tpc9nP+ogXMN15gP17m8Ast7gjkM5Lpv54b7mmPPGIg==" http://127.0.0.1:9006/v1/retailng-op/stat/txs/get?category_id=1000
+			SELECT count(*) FROM "orders" join store on store.id = orders.store_id left join order_sku on orders.order_id = order_sku.order_id and orders.store_id = order_sku.store_id WHERE ("orders"."status" = 'SUCCESS') AND (orders.store_id <> '1000') AND ("order_sku"."category_id" = 1000)
+			SELECT orders.*, store.name as store_name FROM "orders" join store on store.id = orders.store_id left join order_sku on orders.order_id = order_sku.order_id and orders.store_id = order_sku.store_id WHERE ("orders"."status" = 'SUCCESS') AND (orders.store_id <> '1000') AND ("order_sku"."category_id" = 1000) ORDER BY orders.created_at desc LIMIT 10 OFFSET 0
+	http/stat/stock.go
+		/v1/retailng-op/stat/stock/overall 库存统计信息(全品类)
+		/v1/retailng-op/stat/stocks 库存信息(全品类)
+	http/stat/stat.go
+		/v1/retailng-op/stat/overall 综合统计信息(全品类)
+		/v1/retailng-op/stat/sales_ranks 卷烟销售排行信息(全品类)
+		/v1/retailng-op/stat/sales_ratios 卷烟销售占比信息(全品类)
+		/v1/retailng-op/stat/sales 卷烟销售统计(全品类)
+

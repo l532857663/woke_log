@@ -1,0 +1,19 @@
+工作日志:
+	零售户详情：
+	测试：curl -v -XGET -H"X-Auth-Token:pycrcARvroweConpKvswi0IpoG1CdWIJm2ym5MxKr1b818jgMdba19G4uwYRYLG2y+u03NcKzteCbxADQezR1A==" http://127.0.0.1:9004/v1/gxbtj/stat/retailer/get?retailer_no=1037020909185\&starttime=1561910400\&endtime=1572850507
+	生产：curl -v -XGET -H"X-Auth-Token:Lu3iv8OBpy3Tn0PiLbjVPMw1TkH5S6oVEyhV8iaZ5bYG+DxMw4tiHSPJe7qyJY1NmnxP/HC0R+Tl+kaEkaoapw==" http://129.204.6.234:8080/v1/gxbtj/stat/retailer/get?retailer_no=1037020909185\&starttime=1561910400\&endtime=1572850507
+
+	零售户详情：
+	 update scan_history set city='菏泽市' where id='31331a68-1eb9-43e1-bb16-c3db45f06282';
+	 update scan_history set province='山西省' where id='247afb99-8200-469e-9a1d-a1ba6ba3b16c';
+
+二、造海韵溯源数据
+fmdata:
+insert into fmdata(zhu,fu,qr_code,type,created_at) values ('http://hy.zl88.cn/?c=d4e16eabcb07325204deg59d3db97262a1169f','00202243975277819','d4e16eabcb07325204deg59d3db97262a1169f','xb',now());
+btjdata:
+insert into btjdata(xbfu,prod_no,create_time,created_at,order_no) values ('00202243975277819','00',now(),now(),'20190917400069');
+traceable:
+update traceable set scan_time=make_timestamptz(2019,10,15,15,35,53.6) where qr_code='d4e16eabcb07325204deg59d3db97262a1169f';
+
+测试retailng
+lO30z7YnbO/gL+JcxYIbl/QmfgrROKtP1LwMD2sXmNa5RIZX8Bd4iU/NCJN1tMafDSO5rjjq+j+uFh+pI30CUw==

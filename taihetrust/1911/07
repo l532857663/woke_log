@@ -1,0 +1,38 @@
+工作日志：
+	一、广西溯源又要改
+	index.html / css
+	no-result.html / css 
+	btnstyle.png
+	scan.html
+	fake.html
+	...
+	添加凌云测试数据
+
+	二、主扫功能
+	FIXME:
+	公私钥测试完删除
+	paygw接受生成订单的结构体要修改，notifyURL
+
+
+	测试：
+		插入：orders、order_sku、pay_txns
+
+	curl -v -XPOST -H"X-Auth-Token:UqXqRDp551ufb1IGnRVnlVuCZQap46m38JndlxaL6f6DS6eJCpU0tge4FFL8xUSgLMTijuQpNQoahZ3PujoeZA==" -H"X-Device-ID:00000000-45ba-6fc9-3234-aba30033c587" -d@sales_orders_create http://127.0.0.1:9000/v1/retailer/sales/orders/create
+	                   
+	INSERT  INTO "orders" ("store_id","order_no","title","pay_way","pay_time","total_quantity","total_amount","total_discount","subtotal_amount","status","remarks","channel","address_id","pay_txn_no","buyer_id","buyer_name","bc_tx_id","created_at","updated_at") VALUES ('1000','5781028084596755552844518','红塔山(软经典)','',0,5,3750,-3749,1,'INIT','','',0,'',0,'','','2019-11-07 12:31:01','2019-11-07 12:31:01') RETURNING "orders"."order_id
+	INSERT  INTO "order_sku" ("order_id","goods_id","store_id","sku_no","product_name","specs","sales_price","discount_rate","discount_amount","quantity","subtotal_amount","remarks","created_at","updated_at") VALUES (398,0,'1000','6901028315005','红塔山(软经典)','',750,0,0,5,3750,'','2019-11-07 12:31:02','2019-11-07 12:31:02') ON CONFLICT (order_id, sku_no) DO UPDATE SET quantity = order_sku.quantity+5 RETURNING "order_sku"."order_id"
+	INSERT  INTO "pay_txns" ("tx_id","out_tx_id","order_id","order_no","store_id","user_id","mch_id","total_fee","time_end","expire_time","trade_status","uid","trade_type","bank","nonce_str","device_id","bc_tx_id","metadata","created_at","updated_at") VALUES ('71950150000000013911074800107590','',398,'5781028084596755552844518','1000','','950150000000013',1,0,'60','INIT',1,'','','','THCZA63000099','','','2019-11-07 12:31:02','2019-11-07 12:31:02') RETURNING "pay_txns"."tx_id"
+	
+	{"code":0,"message":"","data":{"order_id":398,"code_url":"https://mobile.abchina.com/mpay/mobileBank/zh_CN/EBusinessModule/BarcodeH5Act.aspx?chn=01\u0026mchid=500171950150000000013911074800107590"}}
+
+	
+	查看数据库内容:
+	select * from orders order by order_id desc limit 20;
+	select * from order_sku where order_id='399';
+
+
+	curl -v -XPOST -H"X-Auth-Token:UqXqRDp551ufb1IGnRVnlVuCZQap46m38JndlxaL6f6DS6eJCpU0tge4FFL8xUSgLMTijuQpNQoahZ3PujoeZA==" -H"X-Device-ID:00000000-45ba-6fc9-3234-aba30033c587" -d@pay_code_order http://127.0.0.1:9000/v1/retailer/sales/orders/pay_code
+		
+
+	支付宝直接返回成功接口，微信返回PROCESSING
+

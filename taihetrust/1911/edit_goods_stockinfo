@@ -1,0 +1,16 @@
+{
+	"stock_items":[
+	{
+		"sku_no":"6917878044729",
+		"quantity":0,
+		"cost_price":320,
+		"sales_price":320
+	},
+	{
+		"sku_no":"6985412365760",
+		"quantity":0,
+		"cost_price":500,
+		"sales_price":800
+	}
+	]
+}

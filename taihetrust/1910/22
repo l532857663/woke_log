@@ -1,0 +1,10 @@
+修改广西零售户分析接口：
+	统计分析：
+		零售户分析：
+		retailers/area_stat
+		curl -v -XGET -H"X-Auth-Token:pycrcARvroweConpKvswi0IpoG1CdWIJm2ym5MxKr1b818jgMdba19G4uwYRYLG2y+u03NcKzteCbxADQezR1A==" http://127.0.0.1:9004/v1/gxbtj/stat/retailers/area_stat?starttime=1561910400\&endtime=1572850507\&region_code=370285\&filter[]=scan
+		零售户扫码分析
+		stat/retailer_stat
+		curl -v -XGET -H"X-Auth-Token:FaZ6827+TclYjdFoYrBG7zCaXu+2TfCVIRUZE0g3JsKVd8YJclGdQGfFsg7qE65wVFkiDtOiT6YuS6DN6BMhMw==" http://127.0.0.1:9004/v1/gxbtj/stat/retailer_stat?starttime=1561910400\&endtime=1572597639\&region_code=370200\&filter[]=
+
+

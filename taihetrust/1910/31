@@ -1,0 +1,8 @@
+工作日志:
+	修改btjdata表,添加transcation_id、prod_no两个字段
+	
+	修改prod_no为xbfu的前两位
+	update btjdata set prod_no=substr(xbfu,1,2);
+
+	添加production_info表
+	\copy production_info(prod_no,prod_name,prod_size) from '/data/rawdata/gxdata/productioninfo.csv' DELIMITER ','; 

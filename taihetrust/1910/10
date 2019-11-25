@@ -1,0 +1,10 @@
+编写包条件查询：
+    BtjOverall接口，查询数据统计的卷烟数量，只能获取到订单中的数据(两个单位变换有点模糊)
+    QueryBtjInfo接口，查询包条件列表+订单分拣数据列表
+    都可按照时间、品牌、主副条码等查询
+
+api {get} /v1/gxbtj/stat/btj/overall 包条件综合统计信息
+api {get} /v1/gxbtj/btj/query 查询包条件信息
+curl -v -XGET -H"X-Auth-Token:bDhxZNVV1BPrbK5vDMeDZcfzAXux2SO2pwJAF1G+DbNDjlVrbU+c85s+Cjbt2sEf2v6Wtj744dHEy2gYadMACw==" http://127.0.0.1:9004/v1/gxbtj/stat/btj/overall?starttime='1570291200'\&endtime='1570377600'
+curl -v -XGET -H"X-Auth-Token:bDhxZNVV1BPrbK5vDMeDZcfzAXux2SO2pwJAF1G+DbNDjlVrbU+c85s+Cjbt2sEf2v6Wtj744dHEy2gYadMACw==" http://127.0.0.1:9004/v1/gxbtj/btj/query?starttime='1570291200'\&endtime='1570377600'\&page_size=10\&page_no=2\&prod_nos=1654\&prod_nos=354\&prod_nos=135
+

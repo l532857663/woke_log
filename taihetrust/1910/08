@@ -1,0 +1,17 @@
+工作日志：
+测试erp定时任务，主要文件sync_task.go
+
+修改使其执行定时
+修改数据库测试：
+	delete from purchase_order where p_order_no='00000000000000061807';
+	delete from bill_info where bill_no='00000000000000061807';
+执行记录：
+INSERT  INTO "bill_info" ("store_id","bill_type","bill_no","title","bill_desc","total_amount","sku_count","total_quantity","status","remarks","creator_id","creator_name","created_date","bron_date","arr_date","bc_tx_id","created_at","updated_at") VALUES (1002,1,'00000000000000061807','','',3327022,95,1970,'60    ','',0,'',0,0,0,'4c05a06b4c9268b030e65cae47ddcfa2868512be9d08a3b2399cab6c202760cb','2019-10-09 10:10:08','2019-10-09 10:10:08') RETURNING "bill_info"."bill_id"
+INSERT  INTO "purchase_order" ("store_id","p_order_no","title","total_quantity","total_amount","status","remarks","creator_id","creator_name","created_at","updated_at") VALUES (1002,'00000000000000061807','',1970,3327022,'60    ','',0,'','2019-10-09 10:10:08','2019-10-09 10:10:08') RETURNING "purchase_order"."p_order_id"
+
+SELECT * FROM "bill_info"  WHERE (bill_no = '00000000000000061807')
+SELECT * FROM "purchase_order"  WHERE (p_order_no = '00000000000000061807')
+SELECT * FROM "sku_stock"  WHERE ("sku_stock"."store_id" = 1002) AND ("sku_stock"."sku_id" = 3340)
+UPDATE "sku_stock" SET "quantity" = 30, "updated_at" = '2019-10-09 09:50:07'  WHERE (sku_id = 3340 AND store_id = 1002)
+INSERT  INTO "bill_sku" ("bill_id","sku_id","sku_no","unit","product_name","specs","amount","quantity","before","after","created_at","updated_at") VALUES (525,3340,'6901028138352','','七匹狼(豪情)','',47,10,20,30,'2019-10-09 09:50:07','2019-10-09 09:50:07') RETURNING "bill_sku"."bill_id"
+INSERT  INTO "purchase_order_sku" ("p_order_id","sku_id","sku_no","product_name","specs","purchase_price","quantity") VALUES (16,3340,'6901028138352','七匹狼(豪情)','',47,10) RETURNING "purchase_order_sku"."p_order_id"

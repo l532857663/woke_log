@@ -1,0 +1,5 @@
+工作日志：
+	postgresql导出数据：
+	\copy (select * from btjdata where thfu='AS0255B6DCDF355552') to 'AS0255B6DCDF355552.csv' DELIMITER ',';
+	完善零售户分析的排名数据和地图展示，crul在10月22号
+	查询关系所需求的数据内容，修改溯源页面代码及页面效果

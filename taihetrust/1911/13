@@ -1,0 +1,30 @@
+工作日志：
+	/v1/retailer/stock/stat 商品库存统计(全品类) (完成)
+	curl -v -XGET -H"X-Auth-Token:UqXqRDp551ufb1IGnRVnlVuCZQap46m38JndlxaL6f6DS6eJCpU0tge4FFL8xUSgLMTijuQpNQoahZ3PujoeZA==" http://127.0.0.1:9000/v1/retailer/stock/stat?category_id=1000
+		
+	/v1/retailer/stock/query 查看库存信息(全品类) (完成)
+	curl -v -XGET -H"X-Auth-Token:UqXqRDp551ufb1IGnRVnlVuCZQap46m38JndlxaL6f6DS6eJCpU0tge4FFL8xUSgLMTijuQpNQoahZ3PujoeZA==" http://127.0.0.1:9000/v1/retailer/stock/query?category_id='1000'
+
+	/v1/retailer/stock/scan/query 查询扫码信息(全品类) (完成)
+	curl -v -XGET -H"X-Auth-Token:UqXqRDp551ufb1IGnRVnlVuCZQap46m38JndlxaL6f6DS6eJCpU0tge4FFL8xUSgLMTijuQpNQoahZ3PujoeZA==" http://127.0.0.1:9000/v1/retailer/stock/scan/query?sku_no='6901028075800'
+	{"code":0,"message":"","data":{"sku_no":"6901028075800","product_name":"红双喜(硬)(上海)","stock_quantity":0,"avg_sales_price":0,"sales_price":800,"cost_price":0,"guide_price":800,"unit":"包","category_id":0,"category_name":""}}
+	curl -v -XGET -H"X-Auth-Token:UqXqRDp551ufb1IGnRVnlVuCZQap46m38JndlxaL6f6DS6eJCpU0tge4FFL8xUSgLMTijuQpNQoahZ3PujoeZA==" http://127.0.0.1:9000/v1/retailer/stock/scan/query?sku_no='6917878044729'
+	{"code":0,"message":"","data":{"ProductName":"雀巢1+2原味咖啡","Specs":"雀巢1+2原味咖啡","GuidePrice":0,"Unit":"盒","SpuID":111108,"SpuType":1}}
+
+	/v1/retailer/stock/edit 编辑库存信息(全品类) (完成)
+	curl -v -XPOST -H"X-Auth-Token:UqXqRDp551ufb1IGnRVnlVuCZQap46m38JndlxaL6f6DS6eJCpU0tge4FFL8xUSgLMTijuQpNQoahZ3PujoeZA==" -d@edi http://127.0.0.1:9000/v1/retailer/stock/edit
+
+	11.14
+	/v1/retailer/goods/offline/query 获取商品列表
+
+	/v1/retailer/purchase/query 采购订单查询
+	/v1/retailer/purchase/query_details 查询采购订单详情
+
+	/v1/retailer/store/userinfo
+
+	11.15
+	/v1/retailer/sales/orders/query 销售订单查询
+	/v1/retailer/stat/txs/date_stat 卷烟交易统计
+	/v1/retailer/stat/txs/overall 交易统计信息
+
+	/v1/retailer/stock/goods_stat 商品统计

@@ -1,0 +1,47 @@
+工作日志:
+	数据库：
+		sku_stock：
+			ALTER TABLE "sku_stock" ADD "category_id" bigint;
+			CREATE INDEX idx_sku_stock_category_id ON "sku_stock"(category_id)
+		sales_sku：
+			ALTER TABLE "sales_sku" ADD "category_id" bigint;
+		order_sku：
+			ALTER TABLE "order_sku" ADD "category_id" bigint;
+			CREATE INDEX idx_order_sku_category_id ON "order_sku"(category_id)
+
+	修改代码：
+		修改主扫，添加减库存操作
+			INSERT  INTO "bill_info" ("store_id","bill_type","bill_no","title","bill_desc","total_amount","sku_count","total_quantity","status","remarks","creator_id","creator_name","bc_tx_id","created_at","updated_at") VALUES ('1000',2,'SOB8009646746625336','红塔山(软经典)','',1,2,2,'PROCESSING','',0,'','c5d1f201f704e5be5ab46c89ca89fb08143de99796bbcd45e8d5888bef670879','2019-11-11 13:55:00','2019-11-11 13:55:00') RETURNING "bill_info"."bill_id"
+			UPDATE "sku_stock" SET "quantity" = -2, "updated_at" = '2019-11-11 13:55:00'  WHERE (sku_no = '6901028100359' AND store_id = '1000')
+			INSERT  INTO "bill_sku" ("bill_id","bill_no","sku_no","unit","product_name","specs","amount","quantity","before","after","created_at","updated_at") VALUES (861,'','6901028100359','','长白山(红)','',0,2,0,-2,'2019-11-11 13:55:00','2019-11-11 13:55:00') RETURNING "bill_sku"."bill_id"
+			UPDATE "orders" SET "bc_tx_id" = 'c5d1f201f704e5be5ab46c89ca89fb08143de99796bbcd45e8d5888bef670879', "pay_time" = 1573451699, "pay_txn_no" = '812019111122001417745718991339', "pay_way" = 'ali', "status" = 'PROCESSING', "updated_at" = '2019-11-11 13:55:00'  WHERE ("orders"."order_id" = 414) AND ("orders"."store_id" = '1000') AND ("orders"."order_no" = '3288068202847025278573798') AND ("orders"."title" = '红塔山(软经典)') AND ("orders"."total_quantity" = 2) AND ("orders"."total_amount" = 1500) AND ("orders"."total_discount" = -1499) AND ("orders"."subtotal_amount" = 1) AND ("orders"."status" = 'INIT') AND ("orders"."created_at" = '2019-11-11 05:54:56') AND ("orders"."updated_at" = '2019-11-11 05:54:56')
+			UPDATE "pay_txns" SET "bc_tx_id" = 'c5d1f201f704e5be5ab46c89ca89fb08143de99796bbcd45e8d5888bef670879', "out_tx_id" = '812019111122001417745718991339', "time_end" = 1573451699, "trade_status" = 'PROCESSING', "trade_type" = 'ali', "updated_at" = '2019-11-11 13:55:00'  WHERE ("pay_txns"."tx_id" = '39501500000000131911111354583745') AND ("pay_txns"."order_id" = 414)
+	问题：
+		主扫返回PROCESSING，再次支付失败(猜测授权码过期可重现)
+
+
+
+	v1.1.0
+	core/storage/model_orders.go
+	category_id (全品类标识)
+
+	services/impl.go
+
+	http/stock/stock.go(3)
+	http/stat/stat.go(2)
+	http/sales/sales.go(1)
+
+	(1)
+	/v1/retailer/sales/orders/notify 烟草订单查询(全品类) (完成)
+	curl -v -XGET -H"X-Auth-Token:UqXqRDp551ufb1IGnRVnlVuCZQap46m38JndlxaL6f6DS6eJCpU0tge4FFL8xUSgLMTijuQpNQoahZ3PujoeZA==" http://127.0.0.1:9000/v1/retailer/sales/orders/notify
+	{"code":0,"message":"","data":{"order_no":"3288068202847025278573798","title":"红塔山(软经典)","sales_quantity":2,"sales_amount":1,"total_discount":-1499,"status":"FAIL","pay_way":"ali","pay_time":1573452486,"remarks":"","sku_items":[{"product_name":"长白山(红)","goods_id":0,"sku_no":"6901028100359","sales_quantity":2,"sales_price":750,"sales_amount":750,"unit":"包"},{"product_name":"红塔山(软经典)","goods_id":0,"sku_no":"6901028315005","sales_quantity":2,"sales_price":750,"sales_amount":750,"unit":"包"}],"bc_tx_id":"c5d1f201f704e5be5ab46c89ca89fb08143de99796bbcd45e8d5888bef670879","created_at":1573451696,"updated_at":1573452486}}
+	(2)
+	/v1/retailer/stat/overall 综合统计信息(全品类)
+	/v1/retailer/stat/sales/sales_stat 销售统计信息(全品类)
+	/v1/retailer/stat/sales/spu/query 查看零售户商品销售信息(全品类)
+	(3)
+	/v1/retailer/stock/stat 商品库存统计(全品类)
+	/v1/retailer/stock/query 查看库存信息(全品类)
+	/v1/retailer/stock/scan/query 查询扫码信息(全品类)
+	/v1/retailer/stock/edit 编辑库存信息(全品类)
+

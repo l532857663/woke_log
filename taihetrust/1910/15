@@ -1,0 +1,10 @@
+工作日志：
+retailer:数据库对比(未做)
+修改零售户统计分析：
+            GetRetailers: api {get} /v1/gxbtj/stat/retailers/query 查询零售户扫码情况
+            RetailerAreaStat： api {get} /v1/gxbtj/stat/retailer/area_stat 零售户地区分析
+            缺少地理位置分析
+修改BUG:
+		扫码统计区级别sql
+		扫码位置统计
+		扫码热力图经纬度

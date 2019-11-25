@@ -1,0 +1,9 @@
+{
+	"goods": [{
+		"quantity": 5,
+		"sku_no": "6901028315005"
+	}],
+	"remark": "测试一下",
+	"title": "测试请求",
+	"discount": -3749
+}

@@ -1,0 +1,8 @@
+工作日志：
+1、地图返回中心位置
+2、生产过滤数据
+3、扫码率排行
+4、零售户数据分析
+
+用户分析:
+curl -v -XGET -H"X-Auth-Token:bDhxZNVV1BPrbK5vDMeDZcfzAXux2SO2pwJAF1G+DbNDjlVrbU+c85s+Cjbt2sEf2v6Wtj744dHEy2gYadMACw==" http://127.0.0.1:9004/v1/gxbtj/stat/consumer/query_area_ranks?filter='scan'\&region_code=370200

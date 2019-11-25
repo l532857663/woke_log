@@ -1,0 +1,15 @@
+工作日志:
+重新测试定时任务，查看数据库信息是否正确
+
+问题：
+memcache外网访问不了
+
+编写数据分析后台api代码:
+api {get} /v1/gxbtj/stat/scan/overall 扫码综合统计信息
+api {get} /v1/gxbtj/stat/scan/date_stat 按时间统计扫码信息
+
+开始:
+curl -v -XPOST -H"Content-type:application/json" -d@login http://172.20.0.4:9002/v1/sso/auth/login
+
+curl -v -XGET -H"X-Auth-Token:bDhxZNVV1BPrbK5vDMeDZcfzAXux2SO2pwJAF1G+DbNDjlVrbU+c85s+Cjbt2sEf2v6Wtj744dHEy2gYadMACw==" http://127.0.0.1:9004/v1/gxbtj/stat/scan/overall?starttime='1564588800'\&endtime='1564675200'
+curl -v -XGET -H"X-Auth-Token:bDhxZNVV1BPrbK5vDMeDZcfzAXux2SO2pwJAF1G+DbNDjlVrbU+c85s+Cjbt2sEf2v6Wtj744dHEy2gYadMACw==" http://127.0.0.1:9004/v1/gxbtj/stat/scan/date_stat?starttime='1564588800'\&endtime='1564675200'\&type=''

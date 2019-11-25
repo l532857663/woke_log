@@ -1,0 +1,6 @@
+工作日志：
+	一、fixed 接口问题
+	二、添加字段： 商品编号sku_no
+		/v1/retailer/goods/offline/query: QueryOfflineGoods
+		/v1/retailer/purchase/query: QueryPurchases
+		/v1/retailer/sales/orders/query: QuerySalesOrders 还添加了订单编号order_no

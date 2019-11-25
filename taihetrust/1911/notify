@@ -1,0 +1,14 @@
+{
+	"mch_id":"950150000000013",
+	"total_fee":"1",
+	"time_end":"20191119182527",
+	"trade_type":"wx",
+	"pay_fee":"1",
+	"bank_type":"CFT",
+	"user_id":"oHFX_jsxD2bh44jSt-kaqp8EwM3Y",
+	"out_trade_no":"4949679749194525581381607",
+	"transaction_id":"71950150000000013911195700119670",
+	"out_transaction_id":"4200000434201911198373682017",
+	"nonce_str":"NLYhoD2Q98mQFZOvGY7UC8sFHytSwfkU",
+	"sign":"VUJxgu9lJgoTP5fzHV2ewcXpqNWice5HF8QeGHdbQ/AeVc7yfToarWIgDB5+V+1OHsXFo8CBIGqbbbzHTD2gmtTHeFJKA7By9+iTocYIt2sF5RXn8yXRrHTDec0uBQQyUE2TR+9XJG6/jG89SonAHSnPpXpAnmZWswVGRj4iNEA5248EAufnS7nD+mDskV5hJoqJgY8O6xAXXwnP75X4Z3j/ICRhKX78tsYuHbsib7CNIr5B1I/LDv8vD6CO8Kt3DeAHRhFSPP0IjRU28ztq2JObgr64EHu096FYG5jAc/5VzE+dWUTFOuVpiqHrCXGTc9tQbJJPa6v/a9257hJBeQ=="
+}
