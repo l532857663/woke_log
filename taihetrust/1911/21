@@ -1,0 +1,20 @@
+工作日志:
+	一、熟悉积分通兑的接口
+	二、编写接口
+		/v1/daex/tb/order/create 创建订单
+			curl -v -XPOST -H"X-Auth-Token:U9faOLdsOhUuL70QQswBTB+qr/lYZ22IYw71gABxgf6Tpc9nP+ogXMN15gP17m8Ast7gjkM5Lpv54b7mmPPGIg==" -d@daex_create_order http://127.0.0.1:9008/v1/daex/tb/order/create
+		/v1/daex/tb/integral/ex/query 生成积分兑换方式
+			curl -v -XGET -H"X-Auth-Token:U9faOLdsOhUuL70QQswBTB+qr/lYZ22IYw71gABxgf6Tpc9nP+ogXMN15gP17m8Ast7gjkM5Lpv54b7mmPPGIg==" http://127.0.0.1:9008/v1/daex/tb/integral/ex/query?good_no=6901028011778
+	三、修改 统计信息 接口
+			/v1/retailer/stat/overall 综合统计信息
+			/v1/retailer/stat/sales/sales_stat 销售统计信息
+		优化sql适配全品类之前的接口
+
+
+创建数据
+insert into asset (asset_id,name,remarks,creator_id,creator_name,type,ratio) values (1,'广西积分','测试',1,'广西中烟','buzhidao',0.1);
+insert into asset (asset_id,name,remarks,creator_id,creator_name,type,ratio) values (2,'云南积分','测试1',2,'云南中烟','zhibudao',0.2);
+insert into channel (uid,channel,channel_name,status) values (1,'广西商品渠道','广西中烟',1);
+insert into goods (goods_id,goods_no,channel_uid,channel,product_name,sales_price,quantity,unit) values (1,'6901028011778',1,'广西商品渠道','真龙(起源)',100.00,50,'盒');
+alter sequence orders_order_id_seq restart with 5;
+alter sequence transaction_id_seq restart with 4;

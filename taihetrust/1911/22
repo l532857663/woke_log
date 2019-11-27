@@ -1,0 +1,12 @@
+工作日志：
+	decimal type error：decimal依赖包版本问题：github.com/shopspring/decimal v0.0.0-20180709203117-cd690d0c9e24使用这个
+
+	创建订单查看数据库数据：
+		select * from orders order by created_at desc limit 5;
+		select * from order_goods order by created_at desc limit 10;
+		select * from account where uid='';
+		select * from user_asset where uid='';
+		select * from goods where goods_no='';
+		select * from transaction order by created_at desc limit 5;
+		select * from transaction_asset order by created_at desc limit 10;
+		select * from bc_tx order by created_at desc limit 5;

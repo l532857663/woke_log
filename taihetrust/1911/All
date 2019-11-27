@@ -1,0 +1,108 @@
+04:
+	postgresql导出数据：
+	完善零售户分析的排名数据和地图展示，crul在10月22号
+	查询关系所需求的数据内容，修改溯源页面代码及页面效果
+
+05:
+	一、零售户详情：
+			/v1/gxbtj/stat/retailer/get
+	二、造海韵溯源数据
+
+06:
+	一、支付主扫接口：
+	待调试
+	二、盒子端对接接口：
+	待调试
+
+	三、溯源海韵演示数据创造导入
+	创建独立数据库，查询操作分别查找
+
+07:
+	一、广西溯源又要改
+	二、主扫功能
+
+11:
+	修改代码：
+		修改主扫，添加减库存操作
+	全品类：
+		/v1/retailer/sales/orders/notify 烟草订单查询(全品类) (完成)
+
+12:
+	全品类统计信息数据接口：
+		/v1/retailer/stat/overall 综合统计信息(全品类) (完成，没有毛利润数据)
+		/v1/retailer/stat/sales/sales_stat 销售统计信息(全品类) (完成)
+		/v1/retailer/stat/sales/spu/query 查看零售户商品销售信息(全品类) (完成)
+
+13:
+	/v1/retailer/stock/stat 商品库存统计(全品类) (完成)
+	/v1/retailer/stock/query 查看库存信息(全品类) (完成)
+	/v1/retailer/stock/scan/query 查询扫码信息(全品类) (完成)
+	/v1/retailer/stock/edit 编辑库存信息(全品类) (完成)
+
+14:
+	/v1/retailer/goods/offline/query 获取商品列表 (完成)
+	/v1/retailer/purchase/query 采购订单查询 (完成)
+	/v1/retailer/purchase/query_details 查询采购订单详情 (完成)
+	/v1/retailer/store/userinfo (完成)
+
+15:
+	/v1/retailer/sales/orders/query 销售订单查询 (完成)
+	/v1/retailer/stat/txs/date_stat 卷烟交易统计 (完成)
+	/v1/retailer/stat/txs/overall 交易统计信息 (完成)
+	/v1/retailer/stock/goods_stat 商品统计 (完成)
+16:
+	一、fixed 接口问题
+	二、添加字段： 商品编号sku_no
+		/v1/retailer/goods/offline/query: QueryOfflineGoods
+		/v1/retailer/purchase/query: QueryPurchases
+		/v1/retailer/sales/orders/query: QuerySalesOrders 还添加了订单编号order_no
+
+18:
+	一、修改沧州入库订单的库存量,合并特殊编号到其正常编号的库存数量
+		修改数据库结构
+		测试定时任务：
+	二、FIX BUG：
+			修改销售订单返回订单详情数据
+	三、沧州统计页面：
+		http/stat/sales.go
+			/v1/retailng-op/stat/txs/get 卷烟销售支付列表(全品类) (完成)
+
+19:
+	一、测试沧州农行接口，Notify回调接口
+	二、沧州统计页面：
+		http/stat/stock.go
+			/v1/retailng-op/stat/stock/overall 库存统计信息(全品类) (完成)
+			/v1/retailng-op/stat/stocks 库存信息(全品类) (完成)
+		http/stat/stat.go
+			/v1/retailng-op/stat/overall 综合统计信息(全品类) (完成)
+	三、修改沧州PC端
+		http/stock/stock_check.go 
+			/v1/retailer/stock/check/query 查询库存盘点记录 (完成)
+				添加订单号查询
+
+20:
+	一、测试沧州农行接口，Notify回调接口,验签通过，因为农行API接口修改，调整对应入参结构
+	二、沧州统计页面：
+		http/stat/stat.go
+			/v1/retailng-op/stat/overall 综合统计信息(全品类) (完成)
+	展示应付金额，跟实付金额不太一样
+			/v1/retailng-op/stat/sales_ranks 卷烟销售排行信息(全品类) (完成)
+			/v1/retailng-op/stat/sales_ratios 卷烟销售占比信息(全品类) (完成)
+			/v1/retailng-op/stat/sales 卷烟销售统计(全品类) (完成)
+
+21:
+	一、熟悉积分通兑的接口
+	二、编写接口
+		/v1/daex/tb/order/create 创建订单
+		/v1/daex/tb/integral/ex/query 生成积分兑换方式
+
+22:
+调试修改一、二
+	一、熟悉积分通兑的接口
+	二、编写接口
+		/v1/daex/tb/order/create 创建订单
+		/v1/daex/tb/integral/ex/query 生成积分兑换方式
+	三、修改 统计信息 接口
+			/v1/retailer/stat/overall 综合统计信息
+			/v1/retailer/stat/sales/sales_stat 销售统计信息
+		优化sql适配全品类之前的接口

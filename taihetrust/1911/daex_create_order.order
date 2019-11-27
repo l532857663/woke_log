@@ -1,0 +1,11 @@
+{
+	"good_no":"6901028011778",
+	"total":"100",
+	"integrals": [{
+		"asset_id":"02",
+		"value":"250"
+	},{
+		"asset_id":"04",
+		"value":"2000"
+	}]
+}
