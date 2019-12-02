@@ -1,0 +1,44 @@
+工作日志:
+
+数据库：
+sso:
+	users
+
+retailng:
+	device
+	store
+	mch_info
+	account
+	account_store
+
+	orders
+	order_sku
+	pay_txns
+	bill_info
+	bill_skus
+	sku_stock
+
+
+流程信息：
+	一、注册登陆绑定流程
+		retailng: divice、store、mch_info 三张表数据先综合插入
+		注册手机号至 sso: users，生成retailng: account, account_store，更新retailng: device
+		激活账户时，设定为主账户
+
+	二、支付流程
+		创建订单retailng: orders、order_sku
+		完成支付，修改订单状态，添加出库单，修改库存retailng: orders、bill_info、bill_skus、sku_stock
+		(FIX: 创建订单的价钱使用销售价，不用指导价)
+
+	三、商品管理
+		扫描查询商品信息，编辑商品信息，修改修改销售价、修改库存会生成操作记录retailng: spu、spu_combine、sales_sku、stock_price_adjusts、sku_stock
+		(FIX: 编辑spu没有的商品，会添加spu部分，会添加sales_suk信息，会添加sku_stock。编辑没有库存的信息, 会添加sales_sku, 会添加sku_stock)
+
+
+retailng:
+一、创建订单
+http/sales/orders.go -> /v1/retailer/sales/orders/create:
+	CreatePaymentTxReq这个结构体要改
+
+paygw:
+一、创建订单

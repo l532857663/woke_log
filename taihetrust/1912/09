@@ -1,0 +1,5 @@
+工作日志:
+	测试整合retailng+paygw
+	查询：
+		curl -v -XPOST -d@query http://127.0.0.1:9001/v2/payment/query_tx
+

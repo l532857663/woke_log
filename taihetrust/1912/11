@@ -1,0 +1,15 @@
+工作日志:
+	支付测试:
+		curl -v -XPOST -H"X-Auth-Token:" -H"X-Device-ID:00000000-45ba-6fc9-3234-aba30033c587" -d@../1911/sales_orders_create http://127.0.0.1:9000/v1/retailer/sales/orders/create
+		curl -v -XPOST -H"X-Auth-Token:" -H"X-Device-ID:00000000-45ba-6fc9-3234-aba30033c587" -d@../1911/pay_code_order http://127.0.0.1:9000/v1/retailer/sales/orders/pay_code
+	
+	数据迁移:
+		更新之前数据库的默认银行字段
+			update store set default_bank='ABC';
+			update store set default_bank='CCB' where id='1000';
+			insert into mch_info (store_id,mch_id,bank,bank_name,pos_id,branch_id,manager_name,manager_passid) values ('1000','919020000000004','ABC','中国农业银行','','','太和测试ABC','123456789');
+			insert into mch_info (store_id,mch_id,bank,bank_name,pos_id,branch_id,manager_name,manager_passid) values ('1000','105000259934279','CCB','中国建设银行','042011739','130000000','太和测试CCB','123456789');
+
+		修改pay_txns表结构
+			alter table pay_txns drop constraint pay_txns_pkey;
+			alter table pay_txns alter tx_id drop not null;

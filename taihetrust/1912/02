@@ -1,0 +1,14 @@
+工作日志:
+	修改全品类BUG:
+		盘点库存次数
+		盘点库存详情
+		盘点时不能盘点没有库存的商品
+		盒子查询库存的后端单位显示
+
+
+
+
+ps aux | grep retailng
+kill -15 4714;nohup ./retailng > retailngOut &
+tail -30f retailngOut
+

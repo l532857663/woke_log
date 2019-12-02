@@ -1,0 +1,11 @@
+工作日志:
+	修改烟的库存单位
+	update sku_stock set unit='盒' where category_id='1000' and unit='包';
+	修改编辑商品信息时，初始化商品库存数据
+	修改消息推送时，分割订单中的非烟商品
+	合并支付完成的推送
+
+	删除数据:
+	delete from spu where spu_id > 1284213 and spu_id < 1286493;
+	delete from spu where spu_id => 37228 and spu_id <= 37850;
+

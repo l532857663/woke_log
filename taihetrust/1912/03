@@ -1,0 +1,9 @@
+工作日志:
+调整BUG
+0.4：spu数据去重，导出数据csv
+迁移数据脚本: core/storage/sql/qpl.md
+
+select count(spu_no) from spu;				// 1616510
+select count(distinct spu_no) from spu;		// 1615627
+select count(ss) from (select min(spu_id) from spu group by spu_no) as ss;	//1615627
+explain delete from spu where spu_id not in (select min(spu_id) from spu group by spu_no);

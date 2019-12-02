@@ -1,0 +1,6 @@
+工作日志:
+	合并建行支付到paygw
+
+	测试：
+		生成动态二维码	
+			curl -v -XPOST -d@payment_to_qrcode http://127.0.0.1:9001/v1/payment/tx

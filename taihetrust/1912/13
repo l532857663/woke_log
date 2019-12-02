@@ -1,0 +1,28 @@
+工作日志:
+	创建订单：
+	curl -v -XPOST -H"X-Auth-Token:t6iS4KqtDcNH3zdoaor3ykavWhj+XZvBTQuSwJglJpBKPTi4kvpkgZ127iGM3qBKjY1Y4YwKUgY1otgJgHTk3A==" -H"X-Device-ID:00000000-45ba-6fc9-3234-aba30033c587" -d@../1911/sales_orders_create http://139.198.15.237:8080/v2/retailer/sales/orders/create
+	主扫：
+	curl -v -XPOST -H"X-Auth-Token:t6iS4KqtDcNH3zdoaor3ykavWhj+XZvBTQuSwJglJpBKPTi4kvpkgZ127iGM3qBKjY1Y4YwKUgY1otgJgHTk3A==" -H"X-Device-ID:00000000-45ba-6fc9-3234-aba30033c587" -d@../1911/pay_code_order http://139.198.15.237:8080/v2/retailer/sales/orders/pay_code
+	主扫查询：
+	curl -v -XGET -H"X-Auth-Token:t6iS4KqtDcNH3zdoaor3ykavWhj+XZvBTQuSwJglJpBKPTi4kvpkgZ127iGM3qBKjY1Y4YwKUgY1otgJgHTk3A==" -H"X-Device-ID:00000000-45ba-6fc9-3234-aba30033c587" http://139.198.15.237:8080/v2/retailer/sales/orders/tx/query?order_id=563
+	付款码支付
+
+	POSID=042011739&BRANCHID=130000000&ORDERID=2019121306139797951870052984&PAYMENT=0.01&CURCODE=01&REMARK1=&REMARK2=&ACC_TYPE=AL&SUCCESS=Y&TYPE=1&REFERER=&CLIENTIP=11.168.99.24&ACCDATE=20191213&SIGN=38222bf72b626c7b8eb035f4f7cd3f01d5b527e6fac76172fbc6d5fe3f7f345c949099c1cba1506ffcf5e3802e495487a6b7c6aea37573a2adc99af828a06aca76035864f75ba41713d027197c250f998e74ed604d867c86ea8b93ec51f075d41f42650f3d8fde19ebe811fd73e737257d71c67107ca3b912288ec3f8c806433
+
+	ps aux | grep ./retailng
+
+	nohup ./paygw > out/paygwOut &
+	nohup ./retailng > out/retailngOut &
+	nohup ./sso > out/ssoOut &
+
+
+	select * from orders order by order_id desc limit 10;
+
+
+15083376692
+171c7833-ceb5-4aad-ace1-47ca81a99dd0
+st-4513027737
+00000000-4406-1d62-3234-aba3113109f4
+THCZA18500014
+
+

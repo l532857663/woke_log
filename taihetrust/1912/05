@@ -1,0 +1,7 @@
+工作日志:
+	建行支付：
+		生成动态订单
+		查询订单
+
+	建行支付：
+		curl -v -XPOST -d@payment http://127.0.0.1:9013/v1/ccbis_txns/dynamic_pay

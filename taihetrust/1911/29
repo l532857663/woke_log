@@ -1,0 +1,11 @@
+工作日志：
+	发送短信
+		curl -v -XGET -H"X-Auth-Token:CqqPudnysqblWq1VGqfxQhF3t4dBnj/PzMU1a9h6BvhSB/gHRHBuCetwB6A/rKgvGti00FcRWxB5blnnYP5goQ==" http://172.20.0.4:9002/v1/sso/sms?phone='15083376692'\&type='register'
+		curl -v -XPOST -H"X-Auth-Token:CqqPudnysqblWq1VGqfxQhF3t4dBnj/PzMU1a9h6BvhSB/gHRHBuCetwB6A/rKgvGti00FcRWxB5blnnYP5goQ==" -d@register  http://172.20.0.4:9002/v1/sso/account/register
+
+
+
+rm retailng;ps aux | grep retailng
+cd taihetrust/retailng/; vi core/storage/sales.go 
+cp build/bin/retailng ../../;cd ../../
+kill -15 29394;nohup ./retailng > retailngOut &
