@@ -106,3 +106,28 @@
 			/v1/retailer/stat/overall 综合统计信息
 			/v1/retailer/stat/sales/sales_stat 销售统计信息
 		优化sql适配全品类之前的接口
+
+25:
+	测试积分通兑
+		/v1/daex/tb/ex/stat
+		/v1/daex/tb/ex/query_adjust_ratio
+		/v1/daex/tb/ex/query
+		/v1/daex/tb/order/query
+
+26:
+	调测试运行的服务
+	积分通兑
+	总结测试问题
+
+27:
+	FIX 全品类的BUG
+	FIX 积分通兑的BUG
+	完善积分通兑sql初始化
+
+28:
+	接ali云短信
+
+29:
+	发送短信
+		curl -v -XGET -H"X-Auth-Token:CqqPudnysqblWq1VGqfxQhF3t4dBnj/PzMU1a9h6BvhSB/gHRHBuCetwB6A/rKgvGti00FcRWxB5blnnYP5goQ==" http://172.20.0.4:9002/v1/sso/sms?phone='15083376692'\&type='register'
+		curl -v -XPOST -H"X-Auth-Token:CqqPudnysqblWq1VGqfxQhF3t4dBnj/PzMU1a9h6BvhSB/gHRHBuCetwB6A/rKgvGti00FcRWxB5blnnYP5goQ==" -d@register  http://172.20.0.4:9002/v1/sso/account/register
