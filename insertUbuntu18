@@ -50,3 +50,11 @@ sudo mysql
 3)、update user set  plugin="mysql_native_password";
 4)、flush privileges;
 5)、quit;
+
+# vim 使用 vimrc
+一、PluginInstall     - 安装插件,追加 `!` 用以更新或使用 :PluginUpdate
+二、go支持
+1.插件vim-go已经存在，但需要运行GoInstallBinaries，下载一些bin文件。前提是配置好$GOBIN，参考Go环境安装
+2.cd ～退出至home下，一定要在home下，否则后面会报错。
+3.终端vim随便打开一个文件，输入:GoInstallBinaries，回车开始下载
+4.如果需要更新，输入:GoUpdateBinaries
