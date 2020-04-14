@@ -25,16 +25,23 @@ pip install git-review
 
 ssh-keygen -t rsa
 
+############### 安装chrome
 wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
 sudo dpkg -i google-chrome*; sudo apt-get -f install
 sudo apt-get install google-chrome-stable
 
+############### golang
 下载golang压缩包
 修改环境变量
 
 使用go1.13的goproxy:
 go env -w GOPROXY=https://goproxy.cn,direct
+golang跨平台编译windows程序
+sudo apt-get install gcc-mingw-w64
+env CGO_ENABLED=1 GOOS=windows GOARCH=amd64 CC=x86_64-w64-mingw32-gcc go build -o main.exe main.go
+env CGO_ENABLED=1 GOOS=windows GOARCH=386 CC=i686-w64-mingw32-gcc go build -o main.exe main.go
 
+############### oracle
 cd /opt/oracle
 unzip instantclient-basic-linux.x64-19.3.0.0.0dbru.zip
 sudo sh -c "echo /opt/oracle/instantclient_19_3 > \
@@ -43,7 +50,7 @@ sudo ldconfig
 export LD_LIBRARY_PATH=/opt/oracle/instantclient_19_3:$LD_LIBRARY_PATH
 export PATH=/opt/oracle/instantclient_19_3:$PATH
 
-# mysql 安装无密码
+############### mysql 安装无密码
 sudo mysql
 1)、use mysql;                   #连接到mysql数据库
 2)、update mysql.user set authentication_string=password('123456') where user='root' and Host ='localhost';    #修改密码123456是密码
@@ -58,3 +65,36 @@ sudo mysql
 2.cd ～退出至home下，一定要在home下，否则后面会报错。
 3.终端vim随便打开一个文件，输入:GoInstallBinaries，回车开始下载
 4.如果需要更新，输入:GoUpdateBinaries
+
+############### supervisor
+sudo apt-get install supervisor
+生成配置文件
+echo_supervisord_conf > /etc/supervisor/supervisord.conf
+修改/etc/supervisor/supervisord.conf文件内容,在文件结尾[include]节点处
+	;[include]
+	;files = relative/directory/*.ini
+	改为
+	[include]
+	files = conf.d/*.conf
+执行命令使配置文件生效
+	supervisorctl reload
+在/etc/supervisor/下创建conf.d文件夹，及ProjectName.conf(以项目名称命名的)文件内容如下：
+	[program:demux]  
+#进程运行的用户身份 
+	user=root  
+	command=要执行的命令 
+#错误日志保存路径 
+	stderr_logfile=日志路径
+#输出日志保存路径 
+	stdout_logfile=日志路径
+#程序所在路径 
+	directory=程序所在路径 
+#开机自动启动 
+	autostart=true 
+#自动重启 
+	autorestart=true 
+sudo service supervisor stop 停止supervisor服务
+sudo service supervisor start 启动supervisor服务
+supervisorctl shutdown #关闭所有任务
+supervisorctl stop|start program_name #启动或停止服务
+supervisorctl status #查看所有任务状态
