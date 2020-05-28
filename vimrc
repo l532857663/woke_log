@@ -118,12 +118,12 @@ call vundle#end()            " 这是必需的
 filetype plugin indent on    " 这是必需的 
 
 "go format
+let g:go_fmt_command = "goimports"
 let g:go_highlight_functions = 1
 let g:go_highlight_methods = 1
 let g:go_highlight_structs = 1
 let g:go_highlight_operators = 1
 let g:go_highlight_build_constraints = 1
-let g:gofmt_command = "goimports"
 
 "au FileType go au BufWritePre <buffer> Fmt
 "autocmd FileType go autocmd BufWritePre <buffer> Fmt

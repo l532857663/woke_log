@@ -18,6 +18,7 @@ sudo apt-get install mysql-client-core-5.7
 sudo apt-get install php7.2
 sudo apt-get install php7.2-mysql php7.2-fpm php7.2-curl php7.2-xml php7.2-gd php7.2-mbstring php-memcached php7.2-zip php7.2-bcmath
 sudo apt-get install composer
+sudo apt-get install wkhtmltopdf
 
 sudo apt-get install libbz2-dev libsnappy-dev zlib1g-dev
 
@@ -40,6 +41,9 @@ golang跨平台编译windows程序
 sudo apt-get install gcc-mingw-w64
 env CGO_ENABLED=1 GOOS=windows GOARCH=amd64 CC=x86_64-w64-mingw32-gcc go build -o main.exe main.go
 env CGO_ENABLED=1 GOOS=windows GOARCH=386 CC=i686-w64-mingw32-gcc go build -o main.exe main.go
+
+godoc 插件安装
+sudo apt-get install golang-golang-x-tools
 
 ############### oracle
 cd /opt/oracle
