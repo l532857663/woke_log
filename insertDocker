@@ -21,6 +21,11 @@ sudo apt-get install docker-ce docker-ce-cli containerd.io
 sudo apt-get install docker-compose
 sudo apt-get install daemon
 
+## etc/docker/daemon.json
+{
+    "registry-mirrors": ["http://harbor.test.com"]                                                                                                                                                          
+}
+
 # 免sudo
 ### 参考如下方法将用户添加到docke组
 sudo usermod -aG docker [你的用户名]
