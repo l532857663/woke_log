@@ -49,13 +49,20 @@ godoc 插件安装
 sudo apt-get install golang-golang-x-tools
 
 ############### oracle
+Download:  https://www.oracle.com/database/technologies/instant-client/linux-x86-64-downloads.html
 cd /opt/oracle
-unzip instantclient-basic-linux.x64-19.3.0.0.0dbru.zip
-sudo sh -c "echo /opt/oracle/instantclient_19_3 > \
+unzip \
+instantclient-basic-linux.x64-19.xxxxdbru.zip \
+instantclient-sdk-linux.x64-19.xxxxdbru.zip  \
+instantclient-sqlplus-linux.x64-19.6.0.0.0dbru.zip
+
+sudo sh -c "echo /opt/oracle/instantclient_19_x > \
       /etc/ld.so.conf.d/oracle-instantclient.conf"
 sudo ldconfig
 export LD_LIBRARY_PATH=/opt/oracle/instantclient_19_3:$LD_LIBRARY_PATH
 export PATH=/opt/oracle/instantclient_19_3:$PATH
+go get github.com/mattn/go-oci8
+vi oci8.pc 修改路径
 
 ############### mysql 安装无密码
 sudo mysql
