@@ -109,6 +109,8 @@ echo_supervisord_conf > /etc/supervisor/supervisord.conf
 	autorestart=true 
 sudo service supervisor stop 停止supervisor服务
 sudo service supervisor start 启动supervisor服务
+#动态的输出启动进程时的输出
+supervisorctl tail programname stdout
 supervisorctl shutdown #关闭所有任务
 supervisorctl stop|start program_name #启动或停止服务
 supervisorctl status #查看所有任务状态
