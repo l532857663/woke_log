@@ -1,0 +1,164 @@
+Ystar:
+	ystar-gateway:
+		server C层: 获取请求参数,过滤处理,返回结果
+			ystar-gateway: 网关
+					main:
+						cmd: 命令行参数处理
+						conf: 配置文件加载
+						server: 分析工具、初始化服务及路由、端口监听
+							routerSvr 路由:
+								YstarSvc: 加载数据库配置信息、缓存
+					router:
+						api/
+							app/ app配置
+							personal/ 个人中心
+							missions/ 任务中心
+							invite/ 邀请
+							ad/ 广告
+							points/ 积分
+							disanfang/ 第三方
+							backstage/ 后台任务：手动操作定时任务
+			ystar-cron: 定时任务
+					main:
+						cmd: 命令行参数处理
+						conf: 配置文件加载
+						server: 分析工具、初始化服务及定时任务
+							cronScheduler 定时任务:
+								cronSvc: 加载数据库配置信息、缓存
+		service M层: 获取数据,处理结果
+			dao: 数据库
+			cache: redis缓存
+		dao: 数据库连接、操作
+			封装映射?
+			指针防止初始值为0不识别
+			mock:
+				在service层创建数据库连接，或者创建数据mock
+			db:
+				数据库操作
+		library: 操作封装
+		conf: 配置文件
+		model: 数据库模型
+		utils: 公用操作函数/方法
+
+	Bingoo-gateway:
+		server C层: 获取请求参数,过滤处理,返回结果
+			bingoo-gateway: 网关
+					main:
+						cmd: 命令行参数处理
+						conf: 配置文件加载
+						server: 分析工具、初始化服务及路由、端口监听
+							routerSvr 路由:
+								BingooSvc: 加载数据库配置信息、缓存
+									loadDbMap: 装载bingoo钱包相关配置类map信息
+					router:
+						api/
+							platforms/ 平台（主链）
+							tokens/ 通证
+							addresses/ 地址簿
+							accounts/ 账户
+							assets/ 资产
+							tickers/ 行情
+							backstage/ 后台管理
+						setupTxsRouter 绑定Tokens处理函数
+						setupTokensRouter 绑定Tokens处理函数
+						setupAccountsRouter 绑定Accounts处理函数
+			bingoo-cron: 定时任务
+					main:
+						cmd: 命令行参数处理
+						conf: 配置文件加载
+						server: 分析工具、初始化服务及定时任务
+							cronScheduler 定时任务:
+								cronSvc: 加载数据库配置信息、缓存
+
+问题:
+1.什么设计模式?
+2.DbServiceConfig 加互斥锁的目的所在?  批处理和网关创建不为同一程序，锁有用么？
+
+点:
+	1.gomock 数据构造 反射构造的数据
+	2.gocron 定时任务 启动cron定时任务
+	3.pprof 内存监控
+	4.redis 数据缓存
+	5.seelog 日志打印
+
+gomock: 添加mock代码，补全测试mock
+gocron: 
+	BatchTasksInvite: 流程-> 
+		查数据库，按照数据进行操作，更新数据库内容->
+			成功接着进行下一步操作
+			失败重新当前操作
+		1. 邀请系统数据库配置项信息进行缓存更新
+		2. 获取待处理的邀请明细记录（处理直接邀请奖励、间接邀请奖励和团队差额奖励）
+		3. 获取待处理的锁仓释放明细记录（超级节点/混合节点）
+		4. 获取待处理的权益明细记录（之前处理失败的情况）
+		5. 汇总权益记录（发放至权益账户的流水）
+		6. 汇总超级节点邀请释放锁仓明细记录
+		7. 发放权益奖励至权益账户
+		8. 权益释放 - 直接邀请释放（向上无限传导）
+		9. 权益释放 - 间接邀请释放（向上无限传导）
+		10. 汇总权益记录（权益释放至YSR账户的流水）
+		11. 锁定权益释放至YSR账户
+		12. 超级/混合Y星锁仓资产解锁任务（此任务必须在任务10-锁定权益释放至YSR账户之后, 否则会影响昨日释放金额的数值统计）
+		13. 星辰计划前注册用户的新手奖励解锁计划任务
+		99. 切换系统逻辑日期，重置批量任务执行状态
+
+邀请权益：
+	超级节点/拼单节点
+team_id A为team_id
+			 A
+			/ \
+		   B1  B2
+		  / \   |
+		 C1 C2  C3
+新人权益 由离它最近的星级用户和超级节点用户分享
+每一层相关的邀请都有对应记录，列表树 用空间换时间
+
+bingoo:
+	server.main-> server.server-> server.router-> service.service
+													-> 加载配置文件、init、循环判断注册路由
+问题：
+为啥YottaChain断言失败了
+
+
+server.ServerImpl{
+	httpRouterSvr: &RouterImpl{
+		BingooSvc: &service.Service{
+			&bingoo.BingooService{
+				&basic.ServiceContext{
+					Conf: &conf.Config{},
+					Dao: dao.Storage{},
+					DbConf: &DbServiceConfig{},
+				},
+			},
+		},
+	},
+	httpSvr: &http.Server{},
+}
+yottaChain 异步账号生成器 是200的缓冲通道
+最大重试 MAXIMUM_NUMBER_OF_RETRIES 次之后 break
+1.在redis指定的key中取到当前账户控制值(bingoo:account_id)
+2.重新生成账户, 并设置redis（供下一次使用）
+3.去节点get account进行检查, 看该账户是否可用
+4.如果该账户可用, 则set key nx锁定(bingoo:account_id:key)并设置其request id
+5.YottaChain链上生成账号
+6.通过chan返回nx锁定的账户号
+7.删除nx锁(先检查是否是该goroutine设置的锁)
+
+定时任务：
+	同步TokenTicker：TaskSyncTokenTicker
+	同步成交价格：TaskSyncExchangePrice
+
+bingoo支持公链平台
+bingoo支持token币种
+bingoo支持平台对应币种关系
+
+mock:
+	GetSystemListMockExpect
+	GetPlatformListMockExpect
+	GetTokenListMockExpect
+
+	GetBlockccSymbolMapList4TaskMockExpect
+	GetTokenListByPlatformIdMockExpect
+	GetTokenTypeBySymbolMockExpect
+	GetExchangePriceBySymbolMockExpect
+	GetEntityAddressBookListV2MockExpect

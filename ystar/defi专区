@@ -1,0 +1,26 @@
+defi专区：
+	1.分红宝展示部分
+	2.卡片横栏切换
+		id				int
+		title			string
+		subtitle		string
+		description		string
+		sort			uint
+		24H_turnover	uint64
+		icon_url		string
+		status			uint
+	3.理财展示区
+		id			int
+		title		string
+		sort		string
+		content_url	string
+		risk		string
+		income		string
+		proportion	uint
+	4.收益详情?entity_id&id
+
+哪些库？
+哪些表？
+
+路由-> 业务-> 数据库
+server.router-> service.xxxx-> dao.xxxx
