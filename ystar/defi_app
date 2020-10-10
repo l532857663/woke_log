@@ -24,3 +24,11 @@ defi专区：
 
 路由-> 业务-> 数据库
 server.router-> service.xxxx-> dao.xxxx
+
+	var err error
+	req.TimePageFilter, err = utils.CheckTimePageParameter(&req.TimePageReq, model.REQ_FLAG_TIME)
+	if err != nil {
+		message := fmt.Sprintf("%s: %s", utils.InvalidParamsMessage, err.Error())
+		c.JSON(http.StatusPreconditionRequired, utils.ErrorResponse(utils.InvalidParams, message))
+		return
+	}

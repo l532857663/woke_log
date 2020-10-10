@@ -105,9 +105,9 @@ gocron:
 邀请权益：
 	超级节点/拼单节点
 team_id A为team_id
-			 A
-			/ \
-		   B1  B2
+			  A
+			/   \
+		   B1   B2
 		  / \   |
 		 C1 C2  C3
 新人权益 由离它最近的星级用户和超级节点用户分享
@@ -151,6 +151,8 @@ yottaChain 异步账号生成器 是200的缓冲通道
 bingoo支持公链平台
 bingoo支持token币种
 bingoo支持平台对应币种关系
+
+redis缓存使用dao层调用
 
 mock:
 	GetSystemListMockExpect

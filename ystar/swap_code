@@ -1,0 +1,87 @@
+bingoo_cron:
+	// 汇总流动池总量相关信息
+	TaskQuantityCollect:
+		// 获取当前合约指定的交易对儿
+		res GetSwapPairList(model.YOTTA_SWAP_CONTRACT)
+		for res
+			// 获取当日基准日期时间
+			// 获取历史流动池总量
+			// 获取token0指定日期前尚未汇总的流动池变化量
+			// 获取token1指定日期前尚未汇总的流动池变化量
+			// 获取token0指定日期前尚未汇总的swap兑换量
+			// 获取token1指定日期前尚未汇总的swap兑换量
+		// 流动性变化为0不计入汇总记录
+	// 更新最近24小时相关信息
+	TaskUpdateLast24HInfo:
+		// 获取当前合约指定的交易对儿
+		res GetSwapPairList(model.YOTTA_SWAP_CONTRACT)
+		for res:
+			// 获取token0 24小时兑换量
+			// 获取token1 24小时兑换量
+			// 获取指定合约交易对24小时订单数量
+			// 获取token0历史流动池总量
+			// 获取token0当日流动池变化量
+			// 获取token1当日流动池变化量
+			// 获取token0指定日期前尚未汇总的swap兑换量
+			// 获取token1指定日期前尚未汇总的swap兑换量
+			// 获取当前权重总量
+			// 3. 轧差
+			// 更新流动池总量(YTA)
+
+
+	// 同步TokenTicker
+	TaskSyncTokenTicker:
+		GetTickerRecords:
+			ticker 记录
+
+
+初始化数据:
+bingoo_system
+	  _platform
+	  _token
+
+// 启动扫块模块
+	  YottaChainBlockScanner4Swap
+		// YottaChain操作专用API
+		// 获取区块扫描器扫描位置
+		// 按照偏移量获取YottaChain链上获取指定合约上执行过的动作
+			addCreatePairRecord
+			addLiquidityRecord
+			addSwapRecord
+// 启动不可逆区块检查模块
+	  YottaChainBlockCensor4Swap
+
+yotta.YottaGetActions(主要方法)
+
+添加做市记录的Icron
+service/yottachain/block_scan.go
+	addLiquidityRecord
+model/block_scan.go
+	LiquidityRecord
+model/response.go
+	SwapLiquidityInfo
+service/yottachain/swap_record.go
+	GetSwapLiquidityList
+
+./build/bin/bingoo-cron-local syncdb bingoo_defi
+
+
+
+LiquidityRecord
+查本金
+
+24H
+查比率
+
+bingoo:defi:swap.defi:pair_info
+
+
+
+扫块：
+	记录入库后 加入消息队列
+
+使用消息队列的记录查询状态
+	查询记录的最终状态
+		1.重新放入循环
+		2.失败的剔除 修改失败状态
+		3.成功的剔除 修改成功状态
