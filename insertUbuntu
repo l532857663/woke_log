@@ -34,6 +34,9 @@ wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
 sudo dpkg -i google-chrome*; sudo apt-get -f install
 sudo apt-get install google-chrome-stable
 
+############### git 镜像网站(换源加速)
+git config --global url."https://hub.fastgit.org".insteadOf https://github.com
+
 ############### golang
 下载golang压缩包
 修改环境变量
@@ -120,3 +123,11 @@ wget -qO - https://typora.io/linux/public-key.asc | sudo apt-key add -
 sudo add-apt-repository 'deb https://typora.io/linux ./'
 sudo apt-get update
 sudo apt-get install typora
+
+################################################
+# GBK -> UTF8
+# 单个文件转换代码：
+# iconv -f GBK -t UTF-8 xxx.c > xxx.c.utf8
+# 批量转换文本编码代码:
+# find *.c -exec zsh -c "iconv -f GBK -t UTF8 {} > {}.utf8" \;
+################################################

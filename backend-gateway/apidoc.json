@@ -1,0 +1,15 @@
+{
+  "name": "backend-gateway",
+  "version": "2.0.0",
+  "description": "backend backend interface",
+  "main": "index.js",
+  "title": "backend-gateway backend interface",
+  "repository": {
+    "type": "git",
+    "url": "https://gitlab.ystarglobal.com/backstage/backend/backend-gateway"
+  },
+  "license": "",
+  "dependencies": {
+    "apidoc": "^0.20.1"
+  }
+}

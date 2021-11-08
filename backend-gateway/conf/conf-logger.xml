@@ -1,0 +1,25 @@
+<seelog minlevel="trace">
+    <outputs formatid="common">
+        <console/>
+        <!--                                                                                                                                                                                               
+        日志级别从小到大 trace -> debug -> info -> warn -> error -> critical
+        -->
+        <filter levels="info,debug">
+            <rollingfile type="date" filename="./log/common.log" datepattern="2006-01-02" maxrolls="240" fullname="true"/>
+        </filter>
+        <!--
+        datepattern：指定按事件滚动的触发条件；
+            02.01.2006 指按日滚动；
+            02.01.2006.15 指按时滚动；
+        -->
+        <filter levels="error,critical">
+            <rollingfile type="size" filename="log/error.log" maxsize="102400" maxrolls="5"/>
+        </filter>
+    </outputs>
+    <formats>
+        <!--
+        <format id="common" format="%Date %Time %EscM(46)[%LEV]%EscM(49)%EscM(0) [%File:%Line] [%Func] %Msg%n" />
+        -->
+        <format id="common" format="%Date %Time [%LEV] [%File:%Line] [%Func] %Msg%n" />
+    </formats>
+</seelog>

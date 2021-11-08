@@ -1,0 +1,64 @@
+################################################################################
+#
+#   服务基础配置
+#   - 本服务为bingoo gateway客户端后端接口服务
+#
+################################################################################
+ServerGeneral:
+    Name: backend-gateway
+    # Listen address: The IP on which to bind to listen.
+    ListenAddress: 0.0.0.0
+    # Listen port: The port on which to bind to listen.
+    ListenPort: 4396
+    # pprof 分析工具
+    PProfConf:
+        # 设置是否启用 pprof 分析工具
+        Enabled: true
+        Address: 0.0.0.0
+        Port: 9997
+
+################################################################################
+#
+#   数据库基本配置
+#
+################################################################################
+DBBackend:
+    Driver: mysql
+    Address: 127.0.0.1:3306
+    DBname: backend_system
+    User: root
+    Password: p@ssw0rd
+    Charset: utf8mb4
+    ParseTime: "True"
+    # 最大空闲连接数
+    MaxIdleConns: 20
+    # 最大打开连接数 0为不限制
+    MaxOpenConns: 0
+    # 连接最大生命周期 0为永远不断开
+    ConnMaxLifetime: 7000
+
+################################################################################
+#
+#   缓存基本配置
+#
+################################################################################
+Cache:
+    # 设置是否启用缓存和缓存引擎
+    Enabled: true
+    Engine: redis
+
+    # redis 配置
+    Redis:
+        Enable: true
+        # 是否启用 redis 集群
+        Cluster: false
+        # redis 地址列表
+        Addresses:
+                 - 127.0.0.1:6379
+        AddressIndex: 0
+        Credential: "ystar"
+        Db: 2
+        # 连接池数量, 默认10
+        PoolSize: 10
+        PoolTimeout: 30s
+        IdleTimeout: 1m
