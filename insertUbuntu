@@ -11,13 +11,13 @@ sudo apt-get install git
 sudo apt-get install make
 sudo apt-get install npm // npm install apidoc -g
 sudo apt-get install build-essential
-sudo apt-get install python-pip
+sudo apt-get install python3-pip
 sudo apt-get install nginx
 sudo apt-get install curl
 sudo apt-get install pkg-config
 sudo apt-get install libaio1
-sudo apt-get install mysql-server-5.7
-sudo apt-get install mysql-client-core-5.7
+sudo apt-get install mysql-server-8.0
+sudo apt-get install mysql-client-core-8.0
 sudo apt-get install php7.2
 sudo apt-get install php7.2-mysql php7.2-fpm php7.2-curl php7.2-xml php7.2-gd php7.2-mbstring php-memcached php7.2-zip php7.2-bcmath
 sudo apt-get install composer
@@ -35,21 +35,41 @@ sudo dpkg -i google-chrome*; sudo apt-get -f install
 sudo apt-get install google-chrome-stable
 
 ############### git 镜像网站(换源加速)
+git config --list
 git config --global url."https://hub.fastgit.org".insteadOf https://github.com
 
 ############### golang
-下载golang压缩包
-修改环境变量
+# 下载golang压缩包 https://golang.google.cn/dl/ 自己判断版本, 修改环境变量
+wget https://golang.google.cn/dl/go1.17.3.linux-amd64.tar.gz
 
-使用go1.13的goproxy:
+# 使用go1.13的goproxy:
 go env -w GOPROXY=https://goproxy.cn,direct
-golang跨平台编译windows程序
+# golang跨平台编译windows程序
 sudo apt-get install gcc-mingw-w64
 env CGO_ENABLED=1 GOOS=windows GOARCH=amd64 CC=x86_64-w64-mingw32-gcc go build -o main.exe main.go
 env CGO_ENABLED=1 GOOS=windows GOARCH=386 CC=i686-w64-mingw32-gcc go build -o main.exe main.go
 
-godoc 插件安装
+# godoc 插件安装
 sudo apt-get install golang-golang-x-tools
+
+############### vim
+git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+# 执行bin文件生成
+
+# 一、PluginInstall     - 安装插件,追加 `!` 用以更新或使用 :PluginUpdate
+# 二、go支持
+1.插件vim-go已经存在，但需要运行GoInstallBinaries，下载一些bin文件。前提是配置好$GOBIN，参考Go环境安装
+2.cd ～退出至home下，一定要在home下，否则后面会报错。
+3.终端vim随便打开一个文件，输入:GoInstallBinaries，回车开始下载
+4.如果需要更新，输入:GoUpdateBinaries
+
+############### mysql 安装无密码
+sudo mysql
+1)、use mysql;                   #连接到mysql数据库
+2)、update mysql.user set authentication_string=password('123456') where user='root' and Host ='localhost';    #修改密码123456是密码
+3)、update user set  plugin="mysql_native_password";
+4)、flush privileges;
+5)、quit;
 
 ############### oracle
 Download:  https://www.oracle.com/database/technologies/instant-client/linux-x86-64-downloads.html
@@ -66,22 +86,6 @@ export LD_LIBRARY_PATH=/opt/oracle/instantclient_19_3:$LD_LIBRARY_PATH
 export PATH=/opt/oracle/instantclient_19_3:$PATH
 go get github.com/mattn/go-oci8
 vi oci8.pc 修改路径
-
-############### mysql 安装无密码
-sudo mysql
-1)、use mysql;                   #连接到mysql数据库
-2)、update mysql.user set authentication_string=password('123456') where user='root' and Host ='localhost';    #修改密码123456是密码
-3)、update user set  plugin="mysql_native_password";
-4)、flush privileges;
-5)、quit;
-
-# vim 使用 vimrc
-一、PluginInstall     - 安装插件,追加 `!` 用以更新或使用 :PluginUpdate
-二、go支持
-1.插件vim-go已经存在，但需要运行GoInstallBinaries，下载一些bin文件。前提是配置好$GOBIN，参考Go环境安装
-2.cd ～退出至home下，一定要在home下，否则后面会报错。
-3.终端vim随便打开一个文件，输入:GoInstallBinaries，回车开始下载
-4.如果需要更新，输入:GoUpdateBinaries
 
 ############### supervisor
 sudo apt-get install supervisor

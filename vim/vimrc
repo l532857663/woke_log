@@ -90,7 +90,7 @@ set incsearch
 "
 set nocompatible
 filetype off
-set rtp+=/home/w123/.vim/bundle/Vundle.vim
+set rtp+=/home/wch/.vim/bundle/Vundle.vim
 call vundle#begin()
 
 " 让 Vundle 管理 Vundle, 必须
@@ -101,12 +101,14 @@ Plugin 'VundleVim/Vundle.vim'
 " tagbar 用于方便查看代码结构。
 " nerdtree 用于管理和查看代码目录结构。
 " vim-go-extra golang插件拓展
+" vim-markdown-toc markdown插件
 " vim-solidity 以太坊智能合约语法高亮
 Plugin 'fatih/vim-go'
 Plugin 'majutsushi/tagbar'
 Plugin 'scrooloose/nerdtree'
 Plugin 'vim-jp/vim-go-extra'
-Plugin 'tomlion/vim-solidity'
+Plugin 'mzlogin/vim-markdown-toc'
+" Plugin 'tomlion/vim-solidity'
 " Plugin 'Valloric/YouCompleteMe'
 " Plugin 'gmarik/vundle'
 " Plugin 'jstemmer/gotags'
