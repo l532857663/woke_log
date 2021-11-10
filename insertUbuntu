@@ -15,9 +15,11 @@ sudo apt-get install python3-pip
 sudo apt-get install nginx
 sudo apt-get install curl
 sudo apt-get install pkg-config
+sudo apt-get install mockgen
 sudo apt-get install libaio1
 sudo apt-get install mysql-server-8.0
 sudo apt-get install mysql-client-core-8.0
+sudo apt-get install postgresql postgresql-contrib
 sudo apt-get install php7.2
 sudo apt-get install php7.2-mysql php7.2-fpm php7.2-curl php7.2-xml php7.2-gd php7.2-mbstring php-memcached php7.2-zip php7.2-bcmath
 sudo apt-get install composer
@@ -63,6 +65,18 @@ git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
 3.终端vim随便打开一个文件，输入:GoInstallBinaries，回车开始下载
 4.如果需要更新，输入:GoUpdateBinaries
 
+############### protoc
+sudo apt-get install autoconf automake libtool g++
+git clone https://github.com/google/protobuf.git
+cd protobuf
+git submodule update --init --recursive
+./autogen.sh
+./configure
+make
+make check
+sudo make install
+sudo ldconfig # refresh shared library cache.
+
 ############### mysql 安装无密码
 sudo mysql
 1)、use mysql;                   #连接到mysql数据库
@@ -70,6 +84,11 @@ sudo mysql
 3)、update user set  plugin="mysql_native_password";
 4)、flush privileges;
 5)、quit;
+
+############### redis
+wget https://download.redis.io/releases/redis-6.2.6.tar.gz
+tar xvf redis-6.2.6.tar.gz
+cd redis && make
 
 ############### oracle
 Download:  https://www.oracle.com/database/technologies/instant-client/linux-x86-64-downloads.html
