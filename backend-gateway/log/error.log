@@ -1,1 +1,0 @@
-2021-10-08 12:17:15 [ERR] [redis.go:34] [backend-gateway/library/cache.NewRedis] connect to redis server error: dial tcp 127.0.0.1:6379: connect: connection refused, status: 
