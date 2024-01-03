@@ -43,7 +43,11 @@ git config --global url."https://hub.fastgit.org".insteadOf https://github.com
 ############### golang
 # 下载golang压缩包 https://golang.google.cn/dl/ 自己判断版本, 修改环境变量
 wget https://golang.google.cn/dl/go1.17.3.linux-amd64.tar.gz
-
+# 配置环境变量
+export GO111MODULE=auto
+#export GOPROXY="https://goproxy.cn"
+export GOROOT=/usr/local/go
+export GOPATH=$HOMEPATH/go
 # 使用go1.13的goproxy:
 go env -w GOPROXY=https://goproxy.cn,direct
 # golang跨平台编译windows程序
@@ -84,6 +88,12 @@ sudo mysql
 3)、update user set  plugin="mysql_native_password";
 4)、flush privileges;
 5)、quit;
+# Mysql FIX
+# 修改用户密码：ALTER USER 'root'@'%' IDENTIFIED WITH mysql_native_password BY'123456';
+Group by ONLY_FULL_GROUP_BY: set @@GLOBAL.sql_mode='STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
+# 服务重启： ERROR 2002 (HY000): Can't connect to local MySQL server through socket '/tmp/mysql.sock' (2)
+cd /usr/local/Cellar/mysql/8.0.33
+sudo ./support-files/mysql.server restart
 
 ############### redis
 wget https://download.redis.io/releases/redis-6.2.6.tar.gz
